@@ -21,7 +21,7 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 
 ## User Interface
 - **Keyboard Navigation**: Familiar spreadsheet-like navigation using tab, enter, shift, and arrow keys.
-- **Search Filtering**: Search and filter Objects by directory or name. Includes advanced name search settings for case sensitivity and prefixes.
+- **Search Filtering**: Search and filter Objects by directory, name, or other property values. Includes additional search settings for case sensitivity and prefixes.
 - **Pagination**: Navigate large amounts of Objects with intuitive controls for changing between pages.
 - **Hide/Show Columns**: Hide or show specific columns to focus on the data that matters most to you.
 - **Resizable Columns**: Adjust column widths to fit your data for a customized view. Includes preset buttons for stretching, compacting, and expanding columns.
@@ -184,6 +184,27 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 - **Editing Text**: Press 'ENTER' when editing an input field to get full control over the text position within the input field. Press 'ENTER' again to apply your changes. Press 'ESC' to cancel.
 - **Navigating Cells**: When a cell is focused you can navigate to the next cell with arrow keys, tab, or pressing enter twice (if you're in an input field). Hold shift to go in the opposite direction. The scroll view should automatically update as you scroll, but occassionally it can get stuck, especially in cases where the next cell is a null array element.
 
+## Advanced Search Filtering
+
+By default, the search bar filters Objects by name. Scriptable Sheets also supports advanced expressions to filter Objects by GUID, asset path, and any Object properties.
+
+- **GUID**: `g:` or `guid:` followed by a GUID will filter Objects where their GUID starts with the specified string. Example `guid:f1a42`.
+- **Asset Path**: `ap:`, `path:`, or `assetpath:` followed by an asset path will filter Objects with a matching asset path. Generally, you should start from the `Assets/` directory. Example `path:Assets/Samples/`.
+- **Property**: `p:`, `prop:`, or `property:` followed by a full property path, a filter operation, and a value will perform an advanced property search. Examples include `p:health>30` or `prop:myColor==FF0000`.
+  - **Filter Operations**:
+    - `=` or `==` (equals)
+    - `!=` (not equals)
+    - `>` (greater than)
+    - `<` (less than)
+    - `>=` (greater than or equal to)
+    - `<=` (less than or equal to)
+
+Property searches can be performed on any column within Scriptable Sheets. Ensure you use the full property path, with exact casing, and avoid extra whitespace.
+
+When performing property searches on enums you can enable `Use String Enums` to filter enum values by string.
+
+To search for null Object references use a question mark character `?` as the filter value. Example `p:myObject=?`.
+
 ## Data Serialization and Transfer
 - **Export to Json**: You can export to Json using the context menu of the window menu 'Copy Json' option or by using the save button and changing the extension to '.json'.
 - **Flat File Export/Import**: When exporting or importing a flat file, it will attempt to auto-detect the delimiter.
@@ -200,8 +221,8 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 - **Complex Objects**: Avoid creating arrays of complex types within your ScriptableObject directly. Instead turn those complex types into their own ScriptableObjects. This not only improves performance within Scriptable Sheets, but also gives you another layer of organization. Under the provided RPG sample see how the Unit ScriptableObject references the Weapon ScriptableObject.
 - **Large Arrays**: Large arrays will slow down performance. Consider moving larger arrays into a separate ScriptableObject and referencing that in your parent Object to improve performance. Under the Collections sample see how a StringCollection is created from a base ScriptableCollection.
 - **Pagination**: Leverage row pagination to improve performance when working with a large number of Objects. You can still copy/paste and import/save across all rows and columns by disabling the "Page Rows only" and "Visible Columns Only" settings.
-- **Show Arrays**: Disabling "Show Arrays" setting can improve performance when objects have large arrays.
-- **Show Children**: Disabling "Show Children" setting can improve performance when objects have deeply nested fields. Note that "Show Children" must be enabled to show arrays.
+- **Show Arrays**: Disabling "Show Arrays" setting can improve performance when Objects have large arrays.
+- **Show Children**: Disabling "Show Children" setting can improve performance when Objects have deeply nested fields. Note that "Show Children" must be enabled to show arrays.
 - **Visible Columns**: You can right-click the column header to hide/show any column. There are also buttons on the left side to hide/show all columns at once. If the visible columns counter turns yellow that means the visible columns limit has been reached, but there are more columns to be displayed. You can increase this under `Settings -> Workload -> Visible Column Limit`.
 - **Window Size and Virutalization**: If you have a lot of rows and columns, and hiding them is not an option. Then try shrinking the Window size so they aren't all rendered on every Repaint. The "Virtualization" setting will only render the cells in the Scroll View.
 
@@ -215,9 +236,9 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 
 # Limitations / FAQ
 - **Array Copying**: Does not support copying an entire array from the Inspector window and pasting it across the equivalent array cells in the Scriptable Sheets window. Use the copy row button within the Scriptable Sheets window instead.
-- **Array Display**: The first non-sorted object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout.
+- **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout.
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ.
-- **Automatic Object Creation**: Scriptable Sheets will not automatically create new objects on import. Create objects ahead of time before importing.
+- **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
 - **Copying Cells**: Copying a single cell will not include headers.
 - **Formulas**: There are no formulas for filling cells.
 - **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows.
@@ -227,7 +248,7 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 - **Json Import**: You cannot paste Json directly across the table, rows, or columns. You can paste Json into single cells for certain Object fields, Animation Curves, and Gradients with the caveat being that the Json was copied from the Inspector or Scriptable Sheets Window. You can copy to Json, save to a Json file, or import from a Json file you exported.
 - **JsonDotNet Converters**: JsonDotNet converters do not apply, such as `JsonConverter(typeof(StringEnumConverter))`. For String to Enum conversion, enable the "Use String Enums" setting.
 - **Numeric Fields**: `uint` and `ulong` numeric fields are only supported on Unity versions 2022.1 and later.
-- **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected object type, pinned object types, and other fields. The state will be forgotten when you close the window. If you exit Unity, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
+- **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. The state will be forgotten when you close the window. If you exit Unity, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
 - **Settings Persistence**: Settings between sessions are not persisted in Unity versions prior to 2020.1. For this reason, we recommend Unity 2020.3 and up.
 - **Use String Enums**: Use String Enums does not apply to flagged enums unless it's a single value and you prefix the name with 'Enum:'.
 
