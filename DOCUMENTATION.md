@@ -120,8 +120,10 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 
 ## Object Management Settings
 - **Use Expansion**: Use variable expansion when naming newly created Objects.
-  - **{i}**: Becomes the index value. The index value always starts at zero each time you create new Objects.
+  - **{i}**: Becomes the index value. The index value always starts at the specified `Starting Index` each time you create new Objects.
   - **{t}**: Becomes the type value. This is the default name used when creating a new Object.
+- **Starting Index**: Starting index when using `{i}` for the index value.
+- **Index Padding**: Ensures the index value has a minimum number of digits by adding leading zeros as needed when using `{i}`. For example setting this to `3` would ensure an index value with `3` digits like `001`.
 - **New Object Name**: The name for newly created Objects. Defaults to the type name if left empty.
 - **New Object Prefix**: Prefix for newly created Objects.
 - **New Object Suffix**: Suffix for newly created Objects.
@@ -141,10 +143,13 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
   - **Default**: Uses Unity's default display names.
   - **Friendly**: Uses the display name and property path to generate quasi-identifiers that are easy-to-read.
   - **Advanced**: Uses the full property path as-is.
+- **Lock Names**: Prevents directly editing the Object name field in the table view. Does NOT apply when pasting content or importing files.
 - **Show Row Index**: Display the row index next to each row.
 - **Show Column Index**: Display the column index next to each column.
 - **Show Children**: Display child Object fields. This includes deeply nested child Objects.
 - **Show Arrays**: Display the elements of arrays and other collections as individual columns. Requires the "Show Children" setting to be enabled.
+- **Override Array Size**: Enable to override the number of columns displayed for each array.
+- **Array Size**: Specify how many columns to display for arrays and other collections.
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
 - **Show Read-only**: Display read-only fields for each Object.
@@ -236,7 +241,7 @@ To search for null Object references use a question mark character `?` as the fi
 
 # Limitations / FAQ
 - **Array Copying**: Does not support copying an entire array from the Inspector window and pasting it across the equivalent array cells in the Scriptable Sheets window. Use the copy row button within the Scriptable Sheets window instead.
-- **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout.
+- **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout. Under `Settings -> User Interface` you can toggle "Show Arrays" followed by "Override Size", and then set a specific number of indices to display for each array.
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ.
 - **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
 - **Copying Cells**: Copying a single cell will not include headers.
