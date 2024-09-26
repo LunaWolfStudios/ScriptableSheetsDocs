@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.2.1] - 2024-09-26
+### Fixes
+- Fixed an issue where TextFields in custom editor windows were not stretching properly.
+
 ## [1.2.0] - 2024-09-25
 ### Features
 - New settings to override column display count for arrays and collections.
