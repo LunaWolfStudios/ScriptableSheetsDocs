@@ -1,5 +1,32 @@
 # Scriptable Sheets
 
+## Table of Contents
+- [Overview](#overview)
+- [Core Features](#core-features)
+- [User Interface](#user-interface)
+- [Why Scriptable Sheets?](#why-scriptable-sheets)
+- [Technical details](#technical-details)
+- [Setup](#setup)
+- [Toolbar Buttons](#toolbar-buttons)
+- [Context Menu](#context-menu)
+- [Scriptable Sheets Settings](#scriptable-sheets-settings)
+  - [Data Transfer Settings](#data-transfer-settings)
+  - [Object Management Settings](#object-management-settings)
+  - [User Interface Settings](#user-interface-settings)
+  - [Workload Settings](#workload-settings)
+- [Paste Pad](#paste-pad)
+  - [Context Menu](#context-menu-1)
+- [Tips](#tips)
+  - [Additional Controls](#additional-controls)
+  - [Advanced Search Filtering](#advanced-search-filtering)
+  - [Data Serialization and Transfer](#data-serialization-and-transfer)
+  - [External Tools](#external-tools)
+  - [Performance](#performance)
+  - [Unity](#unity)
+- [Limitations / FAQ](#limitations--faq)
+  - [Known Unity Bugs](#known-unity-bugs)
+- [Samples](#samples)
+
 ## Overview
 View your Unity assets in a whole new way. Scriptable Sheets revolutionizes Unity by integrating spreadsheet-like views for all your assets, boosting productivity and simplifying data management.
 
