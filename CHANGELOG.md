@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.3.0] - 2025-02-19
+### Features
+- Session state cache now restores visible columns and the sorted column index.
+- Single click import from Google Sheets that are viewable by anyone with the link.
+
+### Fixes
+- Fixed a 'missing class attribute' error when using Override Array Size with non-ScriptableObject types.
+
 ## [1.2.1] - 2024-09-26
 ### Fixes
 - Fixed an issue where TextFields in custom editor windows were not stretching properly.
