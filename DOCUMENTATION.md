@@ -14,6 +14,7 @@
   - [Object Management Settings](#object-management-settings)
   - [User Interface Settings](#user-interface-settings)
   - [Workload Settings](#workload-settings)
+  - [Google Sheets Importers](#google-sheets-importers)
 - [Paste Pad](#paste-pad)
   - [Context Menu](#context-menu-1)
 - [Tips](#tips)
@@ -55,7 +56,7 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 - **Sorting**: Sort Unity Objects by any column and property type in the table view, even colors, gradients, animation curves, and read-only fields.
 - **Multiple Windows**: Open multiple Scriptable Sheet windows simultaneously, enabling efficient context switching between Unity Object types.
 - **Recent Pins**: Recently viewed Unity Object types can be auto pinned for quick access.
-- **Session Cache**: Attempts to persist pinned Object types after code compilation or restarting Unity.
+- **Session Cache**: Retains the configuration of each Scriptable Sheet across sessions and code changes when possible, but user script modifications may alter results.
 - **Lightweight Text Editor**: Includes 'Paste Pad', a lightweight text editor for a quick text editing within Unity.
 - **Inspector Compatibility**: Automatically selects Objects in Unity's Inspector and Project windows as you navigate across table cells.
 - **Theme Compatibility**: Compatible with both Unity light and dark themes.
@@ -112,6 +113,7 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Copy Row to Clipboard**: Copy the selected row to the clipboard.
 - **Copy Column to Clipboard**: Copy the selected column to the clipboard.
 - **Smart Paste**: Perform a smart paste operation starting from the selected cell. This will go across pages if "Page Rows Only" is disabled, and into invisible columns if "Visible Columns Only" is disabled.
+- **Import CSV from Google Sheets**: Import data directly from Google Sheets. This requires setting up [Google Sheets Importers](#google-sheets-importers).
 - **Save to Disk**: Save the entire table using the expected Data Transfer settings. It will attempt to auto-detect the column delimiter based on the file format type, similar to importing. You can also save json files using the '.json' file extension.
 - **New Paste Pad**: Open a new Paste Pad window.
 - **First Page**: Navigate to the first page of Objects.
@@ -197,6 +199,49 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Rows Per Page**: Max rows to display per page. Capped for performance.
 - **Visible Column Limit**: Max columns to display at a time. Capped for performance.
 
+## Google Sheets Importers
+
+Google Sheets Importers allow you to import data with a single click from any Google Sheet that is accessible via a shared link.
+
+### Creating Importers
+
+1. **Create a new importer**
+   - Right-click in the Project window and navigate to:
+     `Create -> Scriptable Sheets -> Google Sheets Importer`
+   - Alternatively, use Scriptable Sheets to create new importers.
+   - Ensure each Google Sheets Importer is in an Editor only folder.
+
+2. **Assign an Object type**
+   - Assign the `MonoScript` associated with the desired Scriptable Object.
+   - For non-ScriptableObject types you can enter the full type name such as `UnityEngine.GameObject` for Prefabs.
+   - This links the importer to the correct Object type.
+
+3. **Enter the Google Sheet details**
+   - Enter the "Sheet ID" found in your Google Sheets URL: `https://docs.google.com/spreadsheets/d/SHEET_ID`
+   - Enter the "Sheet Name" found in your Google Sheet. This is **case-sensitive**, so ensure accuracy.
+   - Ensure your Google Sheet's share settings are set to **"Anyone with the link"**.
+
+4. **Repeat** for each Google Sheet you want to import, updating the "Sheet ID" and "Sheet Name" as necessary.
+
+### Assigning Importers
+
+1. Open **Scriptable Sheets Settings**.
+2. Scroll down to **Google Sheets Importers**.
+3. Click **Scan** to automatically detect and assign the importers.
+
+### Importing Data
+
+1. Ensure you have pre-created enough Scriptable Objects
+   - Scriptable Sheets will **not** create new Scriptable Objects during import.
+   - Make sure you have the correct number of Scriptable Objects to match the rows in your Google Sheet.
+
+2. Select a Scriptable Object type in Scriptable Sheets that has an importer assigned.
+
+3. If the Google Sheet has headers ensure you enabled "Headers" under [Data Transfer Settings](#data-transfer-settings).
+
+4. Click the `Import CSV from Google Sheets` button on the toolbar.
+   - CSV import settings will be used with double quotes as the wrap option.
+
 # Paste Pad
 
 Paste Pad is a lightweight text editor for Unity and included as part of Scriptable Sheets. You can open a new Paste Pad directly from the Scriptable Sheets Toolbar. You can have as many Paste Pad windows open as you'd like. Paste Pads do NOT persist across sessions. Use Paste Pad to hold various strings either copied from Scriptable Sheets or elsewhere. This text can be edited and pasted into a Scriptable Sheets table, row, column, or cell. All data in Scriptable Sheets can be exported as a string, making Paste Pad a powerful tool for quick edits.
@@ -281,7 +326,7 @@ To search for null Object references use a question mark character `?` as the fi
 - **JsonDotNet Converters**: JsonDotNet converters do not apply, such as `JsonConverter(typeof(StringEnumConverter))`. For String to Enum conversion, enable the "Use String Enums" setting.
 - **Multiline Strings**: The recommended best practice for multiline strings would be to encode/decode them manually using `\n` or `<br>`. If that is not possible your next option is to ensure Smart Paste is enabled and Row Delimiter is not set to a newline, carriage return, or any other string that is used in your content. You can then use Paste Pad to edit multiline content and paste it back into the cell. You could even split your multiline strings with the unique Row Delimiter to bulk import content across cells that each contain multilines.
 - **Numeric Fields**: `uint` and `ulong` numeric fields are only supported on Unity versions 2022.1 and later.
-- **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. The state will be forgotten when you close the window. If you exit Unity, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
+- **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. If you exit Unity or close a window, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
 - **Settings Persistence**: Settings between sessions are not persisted in Unity versions prior to 2020.1. For this reason, we recommend Unity 2020.3 and up.
 - **Use String Enums**: Use String Enums does not apply to flagged enums unless it's a single value and you prefix the name with 'Enum:'.
 
