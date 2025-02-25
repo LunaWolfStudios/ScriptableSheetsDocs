@@ -46,6 +46,8 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 - **Object References**: Supports Unity Object types such as AudioClips, Materials, Prefabs, ScriptableObjects, and more!
 - **Collections**: Basic support for serializable arrays and lists (not recommended for very large or deeply nested collections).
 - **Read-only fields**: View Asset Paths, GUIDs, and read-only fields for any Unity Object.
+- **Sub Assets**: Manage and filter Sub Assets for ScriptableObject types.
+- **Prefab Components**: Filter, view, and edit Components attached to your Prefabs, including Transforms, Colliders, Rigidbodies, and more.
 
 ## User Interface
 - **Keyboard Navigation**: Familiar spreadsheet-like navigation using tab, enter, shift, and arrow keys.
@@ -156,11 +158,14 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **New Object Name**: The name for newly created Objects. Defaults to the type name if left empty.
 - **New Object Prefix**: Prefix for newly created Objects.
 - **New Object Suffix**: Suffix for newly created Objects.
-- **Scan Option**: The method used when scanning or rescanning for ScriptableObject types and instances of those types.
-  - **Default**: Scans for types based on existing instances of the selected Object type.
-  - **Assembly**: Scans all assemblies for serializable ScriptableObject types. Use this to find ScriptableObject types that have not been created yet.
-- **Scan Path**: The folder path to scan for Object instances. Use this to narrow your search and improve scan times.
-- **Search**: Settings for searching Objects.
+- **Default Main Asset**: New ScriptableObjects will be created as a Sub Asset of the specified default Main Asset.
+- **Scanning**: Settings for Scanning Objects.
+  - **Scan Option**: The method used when scanning or rescanning for ScriptableObject types and instances of those types.
+    - **Default**: Scans for types based on existing instances of the selected Object type.
+    - **Assembly**: Scans all assemblies for serializable ScriptableObject types. Use this to find ScriptableObject types that have not been created yet.
+  - **Scan Path**: The folder path to scan for Object instances. Use this to narrow your search and improve scan times.
+  - **Root Prefabs Only**: Scan only for Components that are directly attached to root Prefab assets. When enabled nested Objects and their Components will be ignored. If disabled it's recommended to enable `Show Asset Path` to provide insight on which root asset you're changing.
+- **Searching**: Settings for searching Objects.
   - **Case Sensitive**: Search for Objects using exact letter casing.
   - **Starts With**: Search for Objects that start with the search text entered.
 
@@ -182,6 +187,7 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
 - **Show Read-only**: Display read-only fields for each Object.
+- **Sub Asset Filters**: Display a Sub Asset filter dropdown with all the Main Assets that contain the selected ScriptableObject type.
 - **Table Navigation**: Settings for navigating the table view.
   - **Auto Scroll**: Auto updates the scroll view when scrolling with keyboard arrows.
   - **Auto Select**: Auto select the focused Object in the inspector.
@@ -265,7 +271,7 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 
 By default, the search bar filters Objects by name. Scriptable Sheets also supports advanced expressions to filter Objects by GUID, asset path, and any Object properties.
 
-- **GUID**: `g:` or `guid:` followed by a GUID will filter Objects where their GUID starts with the specified string. Example `guid:f1a42`.
+- **GUID**: `g:` or `guid:` followed by a GUID will filter Objects where their GUID starts with or contains the specified string. Example `guid:f1a42`.
 - **Asset Path**: `ap:`, `path:`, or `assetpath:` followed by an asset path will filter Objects with a matching asset path. Generally, you should start from the `Assets/` directory. Example `path:Assets/Samples/`.
 - **Property**: `p:`, `prop:`, or `property:` followed by a full property path, a filter operation, and a value will perform an advanced property search. Examples include `p:health>30` or `prop:myColor==FF0000`.
   - **Filter Operations**:
@@ -275,10 +281,14 @@ By default, the search bar filters Objects by name. Scriptable Sheets also suppo
     - `<` (less than)
     - `>=` (greater than or equal to)
     - `<=` (less than or equal to)
+	- `~=` or `=~` (contains)
+	- `!~` or `~!` (does not contain)
 
 Property searches can be performed on any column within Scriptable Sheets. Ensure you use the full property path, with exact casing, and avoid extra whitespace.
 
-When performing property searches on enums you can enable `Use String Enums` to filter enum values by string.
+The contains filter operations will adhere to your `Search Settings`. This allows you to filter for properties that match partial values.
+
+When performing property searches on enums you can enable `Use String Enums` to filter enum values by string. Partial value searches do not work with string enum values.
 
 To search for null Object references use a question mark character `?` as the filter value. Example `p:myObject=?`.
 
@@ -324,11 +334,12 @@ To search for null Object references use a question mark character `?` as the fi
 - **Json Hierarchy Serialization**: The visible columns setting is ignored when using hierarchy Json serialization because it serializes the entire structure of each Object.
 - **Json Import**: You cannot paste Json directly across the table, rows, or columns. You can paste Json into single cells for certain Object fields, Animation Curves, and Gradients with the caveat being that the Json was copied from the Inspector or Scriptable Sheets Window. You can copy to Json, save to a Json file, or import from a Json file you exported.
 - **JsonDotNet Converters**: JsonDotNet converters do not apply, such as `JsonConverter(typeof(StringEnumConverter))`. For String to Enum conversion, enable the "Use String Enums" setting.
+- **Mixed Value Fields**: Certain mixed value fields on default UnityEngine Components will not render as a flagged enum within Scriptable Sheets. Due to the underlying backing field being inaccessible.
 - **Multiline Strings**: The recommended best practice for multiline strings would be to encode/decode them manually using `\n` or `<br>`. If that is not possible your next option is to ensure Smart Paste is enabled and Row Delimiter is not set to a newline, carriage return, or any other string that is used in your content. You can then use Paste Pad to edit multiline content and paste it back into the cell. You could even split your multiline strings with the unique Row Delimiter to bulk import content across cells that each contain multilines.
 - **Numeric Fields**: `uint` and `ulong` numeric fields are only supported on Unity versions 2022.1 and later.
 - **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. If you exit Unity or close a window, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
 - **Settings Persistence**: Settings between sessions are not persisted in Unity versions prior to 2020.1. For this reason, we recommend Unity 2020.3 and up.
-- **Use String Enums**: Use String Enums does not apply to flagged enums unless it's a single value and you prefix the name with 'Enum:'.
+- **Use String Enums**: Use String Enums does not apply to flagged enums unless it's a single value and you prefix the name with 'Enum:'. They also do not apply to various default UnityEngine Components.
 
 ## Known Unity Bugs
 - **Inspector Layer Masks**: When trying to copy layer masks in the Inspector window of Unity, you may get an index out of range exception. It is recommended to copy/paste layer masks within Scriptable Sheets windows only.
@@ -347,6 +358,10 @@ Each Sample folder contains demo assets for testing various use cases within the
 - **Collections**
   - **Description**: Shows how to manage arrays and lists as separate ScriptableObjects in order to maximize performance within the Scriptable Sheets Window.
   - **Path**: `Samples~/Collections`
+  
+- **Component Explorer**
+  - **Description**: Includes sample Prefabs with nearly every Unity Component to see how various Components work with Scriptable Sheets.
+  - **Path**: `Samples~/ComponentExplorer`
 
 - **Component Presets**
   - **Description**: Shows how you can create backing ScriptableObject classes to drive data in MonoBehaviour components like Rigidbodies and Transforms.
@@ -365,5 +380,9 @@ Each Sample folder contains demo assets for testing various use cases within the
   - **Path**: `Samples~/RPG`
 
 - **Sampler**
-  - **Description**: Includes a sampler ScriptableObject that has nearly every serialized property type that is supported by Scriptable Sheets.
+  - **Description**: Includes a sampler ScriptableObject and Component that have nearly every serialized property type that is supported by Scriptable Sheets.
   - **Path**: `Samples~/Sampler`
+
+- **Sub Assets**
+  - **Description**: Provides sample ScriptableObjects with Sub Assets to show how Sub Assets interact with Scriptable Sheets.
+  - **Path**: `Samples~/SubAssets`
