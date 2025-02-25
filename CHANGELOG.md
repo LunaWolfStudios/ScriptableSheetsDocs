@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.4.0] - 2025-02-25
+### Features
+- Default Scan Option now detects and includes Sub Assets of ScriptableObjects and Prefab Components.
+- Filter, view, and edit Components attached to your Prefabs, including Transforms, Colliders, Rigidbodies, and more.
+- Manage and filter Sub Assets for ScriptableObject types.
+- New setting to toggle Sub Asset filters.
+- New setting for creating ScriptableObjects as Sub Assets under a specified Main Asset.
+- New Samples to showcase ScriptableObject Sub Assets and Prefab Components.
+- New search filter operations for contains `~=` and does not contain `!~`.
+
+### Fixes
+- Sub Assets can now be deleted without deleting the Main Asset.
+- Fixed an IOException that occurred when creating assets due to an invalid asset path from Sub Assets.
+- Fixed an issue where some of the Unity built-in assets were not being found.
+- Properly defaults to the correct Sheet Asset primary type when no types are pinned.
+- Fixed lag when performing an advanced filter on an unsupported property type.
+- Fixed an issue where PhysicsMaterials weren't being found in Unity 6 and up.
+
 ## [1.3.0] - 2025-02-19
 ### Features
 - Session state cache now restores visible columns and the sorted column index.
