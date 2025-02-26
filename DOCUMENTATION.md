@@ -47,6 +47,7 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 - **Collections**: Basic support for serializable arrays and lists (not recommended for very large or deeply nested collections).
 - **Read-only fields**: View Asset Paths, GUIDs, and read-only fields for any Unity Object.
 - **Sub Assets**: Manage and filter Sub Assets for ScriptableObject types.
+- **Addressable Assets**: Compatible with Addressable Asset References and their Sub Assets.
 - **Prefab Components**: Filter, view, and edit Components attached to your Prefabs, including Transforms, Colliders, Rigidbodies, and more.
 
 ## User Interface
@@ -315,6 +316,7 @@ To search for null Object references use a question mark character `?` as the fi
 
 ## Unity
 - **Additional Unity Types**: Additional Unity types like GUISkins and TimelineAssets can be found under the 'Assembly' Scan Option setting. If an instance of those types already exists then 'Default' Scan Option should pick them up as well. If you can't find a specific Unity Type it could be that it's nested under another type (e.g. Render Textures will be under Texture).
+- **Addressable Asset References**: Under `Settings -> User Interface` you can toggle "Show Read-only" to view the the internal values of Addressable Asset References. To view the standard Object fields disable "Show Read-only".
 - **Create Asset Menu Attribute**: You no longer need to include the 'CreateAssetMenu' attribute on your ScriptableObject classes.
 - **New Object Detection**: When you select a new Object type, it will automatically detect the first folder any instance of that Object type appears in and set that as the asset path for newly created Objects of that type.
 - **Paste Pad Context Menu**: The context menu of the Paste Pad window contains shortcuts for clearing, copying, saving, and toggling word wrap.
@@ -324,7 +326,7 @@ To search for null Object references use a question mark character `?` as the fi
 # Limitations / FAQ
 - **Array Copying**: Does not support copying an entire array from the Inspector window and pasting it across the equivalent array cells in the Scriptable Sheets window. Use the copy row button within the Scriptable Sheets window instead.
 - **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout. Under `Settings -> User Interface` you can toggle "Show Arrays" followed by "Override Size", and then set a specific number of indices to display for each array.
-- **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ.
+- **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ or across Addressable `AssetReference` types.
 - **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
 - **Copying Cells**: Copying a single cell will not include headers.
 - **Formulas**: There are no formulas for filling cells.
