@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
-## [1.4.1] - 2025-02-27
+## [1.4.1] - 2025-02-26
 ### Fixes
 - Improved support for Addressable Asset References and their Sub Assets.
 - Improved friendly header formatting for serialized fields that use backing field attributes.
