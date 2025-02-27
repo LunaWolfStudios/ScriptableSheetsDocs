@@ -238,13 +238,16 @@ Google Sheets Importers allow you to import data with a single click from any Go
 
 ### Importing Data
 
-1. Ensure you have pre-created enough Scriptable Objects
+1. Ensure you have pre-created enough Scriptable Objects.
    - Scriptable Sheets will **not** create new Scriptable Objects during import.
    - Make sure you have the correct number of Scriptable Objects to match the rows in your Google Sheet.
 
 2. Select a Scriptable Object type in Scriptable Sheets that has an importer assigned.
 
-3. If the Google Sheet has headers ensure you enabled "Headers" under [Data Transfer Settings](#data-transfer-settings).
+3. Under Settings review your [Data Transfer Settings](#data-transfer-settings).
+   - If the Google Sheet has headers ensure you enabled "Headers".
+   - If you have multiple pages of Objects disable "Page Rows Only".
+   - If you have exceeded the visible column limit disable "Visible Columns Only".
 
 4. Click the `Import CSV from Google Sheets` button on the toolbar.
    - CSV import settings will be used with double quotes as the wrap option.
