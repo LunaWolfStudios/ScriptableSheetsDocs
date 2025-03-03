@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.4.2] - 2025-03-03
+### Fixes
+- Column headers now remain visible while scrolling.
+- Row and column highlighting no longer disappear when scrolling.
+- Missing Google Sheets Importers are now removed when rescanning for new ones.
+- Google Sheets Importers now support optional Main Asset linking for Sub Assets.
+- Prefabs and Materials can now be set as the default Main Asset for Sub Assets.
+- Fixed a crash caused by importing a filename with invalid characters.
+- Fixed issues with certain wrap options when exporting and importing AnimationCurve and Gradient values.
+- Fixed an issue where the header row wasn't being detected when importing data.
+- Improved flat file parsing to handle additional edge cases with wrapped values and Google Sheets Importers.
+
 ## [1.4.1] - 2025-02-26
 ### Fixes
 - Improved support for Addressable Asset References and their Sub Assets.
