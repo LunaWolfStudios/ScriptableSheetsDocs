@@ -221,6 +221,7 @@ Google Sheets Importers allow you to import data with a single click from any Go
 2. **Assign an Object type**
    - Assign the `MonoScript` associated with the desired Scriptable Object.
    - For non-ScriptableObject types you can enter the full type name such as `UnityEngine.GameObject` for Prefabs.
+   - For Sub Assets you can assign an optional Main Asset, which is only needed if you want to group your Sheets by Main Asset.
    - This links the importer to the correct Object type.
 
 3. **Enter the Google Sheet details**
@@ -331,6 +332,7 @@ To search for null Object references use a question mark character `?` as the fi
 - **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout. Under `Settings -> User Interface` you can toggle "Show Arrays" followed by "Override Size", and then set a specific number of indices to display for each array.
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ or across Addressable `AssetReference` types.
 - **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
+- **Base64 Encoding**: Animation curves and gradients will be serialized as base64 strings when using wrap options that are unsupported with Json like double quotes.
 - **Copying Cells**: Copying a single cell will not include headers.
 - **Formulas**: There are no formulas for filling cells.
 - **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows.
