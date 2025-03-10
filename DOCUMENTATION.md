@@ -31,12 +31,14 @@
 ## Overview
 View your Unity assets in a whole new way. Scriptable Sheets revolutionizes Unity by integrating spreadsheet-like views for all your assets, boosting productivity and simplifying data management.
 
+Inspect your assets in a table list asset explorer, where you can easily manage everything in one window. View and edit your ScriptableObjects, Prefabs, Components, and more. No need for endless searching through folders and Objects.
+
 [Video Tutorials](https://www.youtube.com/playlist?list=PL6G9X1zrT3BLwLA7pbgM5Aam9RrLsrBZp)
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
 ## Core Features
-- **Seamless Integration**: Directly integrates with existing ScriptableObjects and other Unity asset types, providing a cohesive experience inside the Unity Editor.
+- **Seamless Integration**: Instantly explore all your new and existing assets, including ScriptableObjects, in a spreadsheet-like view—no coding required.
 - **Asset Management**: Select, read, update, and delete Unity Objects within Scriptable Sheets table list view.
 - **Batch Create**: Quickly create multiple instances of any ScriptableObject type with a single click.
 - **Import/Export**: Easily import CSV, TSV, and other flat file formats. Export to your preferred format, including Json, with options for headers, wrap settings, custom delimiters, and string-to-enum conversions.
@@ -52,7 +54,7 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 
 ## User Interface
 - **Keyboard Navigation**: Familiar spreadsheet-like navigation using tab, enter, shift, and arrow keys.
-- **Search Filtering**: Search and filter Objects by directory, name, or other property values. Includes additional search settings for case sensitivity and prefixes.
+- **Search Filtering**: Search and filter Objects by directory, name, and even [advanced property-based filters](https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#advanced-search-filtering). Includes additional search settings for case sensitivity and prefixes.
 - **Pagination**: Navigate large amounts of Objects with intuitive controls for changing between pages.
 - **Hide/Show Columns**: Hide or show specific columns to focus on the data that matters most to you.
 - **Resizable Columns**: Adjust column widths to fit your data for a customized view. Includes preset buttons for stretching, compacting, and expanding columns.
@@ -334,6 +336,7 @@ To search for null Object references use a question mark character `?` as the fi
 - **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
 - **Base64 Encoding**: Animation curves and gradients will be serialized as base64 strings when using wrap options that are unsupported with Json like double quotes.
 - **Copying Cells**: Copying a single cell will not include headers.
+- **Double Quotes**: Google Sheets has trouble handling double quotes within cells. To avoid issues with Google Sheets when importing/exporting, it's best to refrain from using double quotes inside your column data.
 - **Formulas**: There are no formulas for filling cells.
 - **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows.
 - **Inspector Fields**: Copying certain property fields from the Scriptable Sheets window does not always allow you to paste directly into the Inspector window. It is recommended to paste the value within the Scriptable Sheets window for it to work as expected.
