@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.4.3] - 2025-03-10
+### Fixes
+- Fixed an issue where importing wrapped multiline content would fail.
+- Fixed an issue where wrapped empty column data was being removed when using Google Sheets Importers.
+
 ## [1.4.2] - 2025-03-03
 ### Fixes
 - Column headers now remain visible while scrolling.
