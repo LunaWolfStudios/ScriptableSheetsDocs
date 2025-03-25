@@ -1,0 +1,22 @@
+name: "Other"
+description: "Ask a question or start a discussion."
+labels: [question]
+
+title: "[other] <short description>"
+
+body:
+  - type: textarea
+    id: request-details
+    attributes:
+      label: "Request Details"
+      description: "Describe your request in detail."
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: "Additional Information"
+      description: "Include any extra details, screenshots, or references."
+    validations:
+      required: false

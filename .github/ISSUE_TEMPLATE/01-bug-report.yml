@@ -1,0 +1,49 @@
+name: "Bug Report"
+description: "Report a bug or issue."
+labels: [bug]
+
+title: "[bug] <short description>"
+
+body:
+  - type: input
+    id: scriptable-sheets-version
+    attributes:
+      label: "Scriptable Sheets Version"
+      description: "Which version of Scriptable Sheets are you using?"
+      placeholder: "0.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: unity-version
+    attributes:
+      label: "Unity Version"
+      description: "Which version of Unity are you using?"
+      placeholder: "0000.0.0f1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "Provide a brief summary of the issue."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: "Steps to Reproduce"
+      description: "List the steps needed to reproduce the issue."
+      placeholder: "1. Open the Scriptable Sheets window\n2. ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-media
+    attributes:
+      label: "Additional Media"
+      description: "Attach screenshots, videos, or GIFs that illustrate the issue."
+    validations:
+      required: false

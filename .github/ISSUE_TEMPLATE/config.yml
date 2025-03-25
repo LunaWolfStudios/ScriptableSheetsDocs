@@ -1,0 +1,15 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "GitHub Community Support"
+    url: "https://github.com/community"
+    about: "Get help and support from the GitHub Community."
+templates:
+  - name: "Bug Report"
+    filename: "01-bug-report.yml"
+    about: "Report a bug or issue."
+  - name: "Feature Request"
+    filename: "02-feature-request.yml"
+    about: "Suggest a new feature or improvement."
+  - name: "Other"
+    filename: "03-other.yml"
+    about: "Ask a question or start a discussion."

@@ -1,0 +1,40 @@
+name: "Feature Request"
+description: "Suggest a new feature or improvement."
+labels: [enhancement]
+
+title: "[feature] <short description>"
+
+body:
+  - type: input
+    id: scriptable-sheets-version
+    attributes:
+      label: "Scriptable Sheets Version"
+      description: "Which version of Scriptable Sheets are you using?"
+      placeholder: "0.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: unity-version
+    attributes:
+      label: "Unity Version"
+      description: "Which version of Unity are you using?"
+      placeholder: "0000.0.0f1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "Feature Description"
+      description: "Describe the feature you’d like to see and why it would be useful."
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: "Additional Information"
+      description: "Include any extra details, references, or related discussions."
+    validations:
+      required: false
