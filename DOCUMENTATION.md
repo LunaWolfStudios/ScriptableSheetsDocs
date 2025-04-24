@@ -14,6 +14,7 @@
   - [Object Management Settings](#object-management-settings)
   - [User Interface Settings](#user-interface-settings)
   - [Workload Settings](#workload-settings)
+  - [Experimental Settings](#experimental-settings)
   - [Google Sheets Importers](#google-sheets-importers)
 - [Paste Pad](#paste-pad)
   - [Context Menu](#context-menu-1)
@@ -93,7 +94,7 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 2. **Source Control**:
    - If you are using source control, it is recommended to ignore the `UserSettings` folder under the root Unity project directory.
 3. **Opening Scriptable Sheets**:
-   - Navigate to `Window -> Scriptable Sheets` to open your first Scriptable Sheets Window.
+   - Navigate to `Window -> Scriptable Sheets` to open your first Scriptable Sheets window.
 4. **Different Unity Asset Types**:
    - In the top left corner of the window, you can select the Unity asset types you'd like to explore in Scriptable Sheets. By default it'll be set to ScriptableObjects.
 5. **Select Object Type**:
@@ -129,15 +130,23 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Delete**: Delete an Object from the editor.
 
 ## Context Menu
-- **New Sheets Window**: Open a new Scriptable Sheets window.
+- **Open Recent Sheet**: Opens a recently closed Scriptable Sheets window. If none are available use 'New Sheet' instead.
+- **New Sheet**: Opens a fresh Scriptable Sheets window. To open a recently closed Sheet use 'Open Recent Sheet' or navgiate to `Window -> Scriptable Sheets`.
+- **Rename Sheet**: Opens a popup to rename the Scriptable Sheets window. A unique name is recommended, but not required.
+- **Open Sheet**: Open a Scriptable Sheets window by name. Sheets with the same name are differentiated by their instance IDs. Cannot open a Sheet already opened.
+- **Delete Sheet**: Delete a Scriptable Sheets window by name. Sheets with the same name are differentiated by their instance IDs. Cannot delete a Sheet that is opened.
+- **Clone Sheet**: Creates and opens a copy of the selected Scriptable Sheets window by name. Sheets with the same name are differentiated by their instance IDs.
 - **New Paste Pad Window**: Open a new Paste Pad window.
 - **Open Settings Window**: Open the Scriptable Sheets Settings window.
+- **Edit Column Visibility**: Opens a popup with toggles that enable or disable individual columns in the Scriptable Sheets editor window. Can also be opened by clicking the column limit indicator on the toolbar.
 - **Copy**: Copies the Scriptable Sheet content this is identical to the 'Copy' button.
 - **Copy Json**: Copy content as Json.
 
 # Scriptable Sheets Settings
 
 ## Data Transfer Settings
+Settings for handling data import and export.
+
 - **Smart Paste**: Enhance pasting by distributing flat file data across table cells using the specified delimiters.
 - **Headers**: Include header names when transferring flat file data.
 - **Page Rows Only**: Restrict data transfer to the rows on the current page only.
@@ -148,11 +157,17 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Row Delim**: Delimiter to use when splitting rows.
 - **Column Delim**: Delimiter to use when splitting columns.
 - **Wrap Option**: Controls how cell values and headers are wrapped when transferring flat file data.
+- **Escape Option**: Controls how characters inside a wrapped cell that match the wrapper are escaped.
+  - **Backslash**: Adds a backslash before matching characters. Example: `"Hello\"World!"`
+  - **Repeat**: Duplicates the matching character. Select this if working with Google Sheets. Example: `"Hello""World!"`
+  - **Custom**: Custom sequence to add before matching characters.
 - **Json Format**: Serialization format for importing and exporting Json.
   - **Flat**: Serializes the table elements as property paths and string values. Recommended for interchangeability between flat file formats. 
   - **Hierarchy**: Serializes the table elements using the Object type and utilizes a layered structure.
 
 ## Object Management Settings
+Settings for scanning, creating, and filtering Objects.
+
 - **Use Expansion**: Use variable expansion when naming newly created Objects.
   - **{i}**: Becomes the index value. The index value always starts at the specified `Starting Index` each time you create new Objects.
   - **{t}**: Becomes the type value. This is the default name used when creating a new Object.
@@ -166,13 +181,21 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
   - **Scan Option**: The method used when scanning or rescanning for ScriptableObject types and instances of those types.
     - **Default**: Scans for types based on existing instances of the selected Object type.
     - **Assembly**: Scans all assemblies for serializable ScriptableObject types. Use this to find ScriptableObject types that have not been created yet.
+  - **Scan Path Option**: Controls how the "Scan Path" is selected.
+    - **Default**: Lets you select any folder in Assets or Packages, with the root Assets folder selected by default.
+    - **Assets**: Selects the Assets folder.
+    - **Packages**: Selects the Packages folder.
+    - **All**: Selects both the Assets and Packages folders.
   - **Scan Path**: The folder path to scan for Object instances. Use this to narrow your search and improve scan times.
+  - **Show Progress Bar**: Display a progress bar during Object scanning.
   - **Root Prefabs Only**: Scan only for Components that are directly attached to root Prefab assets. When enabled nested Objects and their Components will be ignored. If disabled it's recommended to enable `Show Asset Path` to provide insight on which root asset you're changing.
 - **Searching**: Settings for searching Objects.
   - **Case Sensitive**: Search for Objects using exact letter casing.
   - **Starts With**: Search for Objects that start with the search text entered.
 
 ## User Interface Settings
+Settings for the user interface, table layout, and table navigation.
+
 - **Default Sheet Assets**: The default sheet asset types to display.
 - **Auto Pin**: Auto pin Object types to the toolbar as they are selected.
 - **Confirm Delete**: Display a warning message before deleting Objects.
@@ -199,6 +222,8 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
   - **Highlight Column**: Highlight the selected column.
 
 ## Workload Settings
+Settings that affect computational performance. Modify with caution to optimize efficiency and responsiveness.
+
 - **Auto Save**: Auto saves your changes. Recommended to disable for performance.
 - **Auto Scan**: Auto scans the project for newly imported Objects. Recommended to disable for performance.
 - **Auto Update**: Auto updates values as they are changed in the Inspector window.
@@ -207,6 +232,11 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Max Visible Cells**: Total number of cells that can be visible at a time. Capped for performance.
 - **Rows Per Page**: Max rows to display per page. Capped for performance.
 - **Visible Column Limit**: Max columns to display at a time. Capped for performance.
+
+## Experimental Settings
+Settings that may cause unexpected behavior. Use at your own risk.
+
+- **Rendering Overrides**: Serialized property types added here will override Scriptable Sheets' default rendering behavior, allowing the use of custom property drawers and attributes. This may disrupt the table layout or cause unexpected behavior. Use at your own risk.
 
 ## Google Sheets Importers
 
@@ -270,7 +300,7 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 
 ## Additional Controls
 - **Column Headers**: Right-click the column headers to hide/show them individually.
-- **Context Menu**: Right-click the Window name to access the context menu in Unity. The context menu for the Scriptable Sheets Window contains shortcuts to copy as a flat file, copy directly as Json, open new windows, settings, and Paste Pads.
+- **Context Menu**: Right-click the Window name to access the context menu in Unity. The context menu for the Scriptable Sheets window contains a number of shortcuts and features as outlined under the [Context Menu](#context-menu) section.
 - **Editing Text**: Press 'ENTER' when editing an input field to get full control over the text position within the input field. Press 'ENTER' again to apply your changes. Press 'ESC' to cancel.
 - **Navigating Cells**: When a cell is focused you can navigate to the next cell with arrow keys, tab, or pressing enter twice (if you're in an input field). Hold shift to go in the opposite direction. The scroll view should automatically update as you scroll, but occassionally it can get stuck, especially in cases where the next cell is a null array element.
 
@@ -300,6 +330,7 @@ When performing property searches on enums you can enable `Use String Enums` to 
 To search for null Object references use a question mark character `?` as the filter value. Example `p:myObject=?`.
 
 ## Data Serialization and Transfer
+- **Double Quotes**: Google Sheets may not handle double quotes within cells correctly, leading to import/export issues. It's best to set "Escape Mode" to "Repeat" to ensure proper handling when using Google Sheets.
 - **Export to Json**: You can export to Json using the context menu of the window menu 'Copy Json' option or by using the save button and changing the extension to '.json'.
 - **Flat File Export/Import**: When exporting or importing a flat file, it will attempt to auto-detect the delimiter.
 - **Newlines in Flat Files**: When importing flat files, ensure you're using the correct newlines. Typical default newlines are `\r\n` for Windows, `\n` for Linux, and `\r` for Mac. This is especially important when copy-pasting content directly.
@@ -335,17 +366,17 @@ To search for null Object references use a question mark character `?` as the fi
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ or across Addressable `AssetReference` types.
 - **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
 - **Base64 Encoding**: Animation curves and gradients will be serialized as base64 strings when using wrap options that are unsupported with Json like double quotes.
+- **Column Widths**: Column widths are persisted per column in Unity 2021.2 and newer. Older versions of Unity do not support this due to API limitations.
 - **Copying Cells**: Copying a single cell will not include headers.
-- **Double Quotes**: Google Sheets has trouble handling double quotes within cells. To avoid issues with Google Sheets when importing/exporting, it's best to refrain from using double quotes inside your column data.
 - **Formulas**: There are no formulas for filling cells.
-- **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows.
+- **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows. You can override this behaviour using the "Rendering Overrides" setting under [Experimental Settings](#experimental-settings). Overriding the rendering behaviour may disrupt the table layout, use with caution.
 - **Inspector Fields**: Copying certain property fields from the Scriptable Sheets window does not always allow you to paste directly into the Inspector window. It is recommended to paste the value within the Scriptable Sheets window for it to work as expected.
 - **Json Flat File Import**: When importing a Json flat file where you modified the number of array elements, ensure you update the size property both in Scriptable Sheets and in the file prior to import. Otherwise, the array values will be null.
 - **Json Hierarchy Serialization**: The visible columns setting is ignored when using hierarchy Json serialization because it serializes the entire structure of each Object.
-- **Json Import**: You cannot paste Json directly across the table, rows, or columns. You can paste Json into single cells for certain Object fields, Animation Curves, and Gradients with the caveat being that the Json was copied from the Inspector or Scriptable Sheets Window. You can copy to Json, save to a Json file, or import from a Json file you exported.
+- **Json Import**: You cannot paste Json directly across the table, rows, or columns. You can paste Json into single cells for certain Object fields, Animation Curves, and Gradients with the caveat being that the Json was copied from the Inspector or Scriptable Sheets window. You can copy to Json, save to a Json file, or import from a Json file you exported.
 - **JsonDotNet Converters**: JsonDotNet converters do not apply, such as `JsonConverter(typeof(StringEnumConverter))`. For String to Enum conversion, enable the "Use String Enums" setting.
 - **Mixed Value Fields**: Certain mixed value fields on default UnityEngine Components will not render as a flagged enum within Scriptable Sheets. Due to the underlying backing field being inaccessible.
-- **Multiline Strings**: The recommended best practice for multiline strings would be to encode/decode them manually using `\n` or `<br>`. If that is not possible your next option is to ensure Smart Paste is enabled and Row Delimiter is not set to a newline, carriage return, or any other string that is used in your content. You can then use Paste Pad to edit multiline content and paste it back into the cell. You could even split your multiline strings with the unique Row Delimiter to bulk import content across cells that each contain multilines.
+- **Multiline Strings**: When working with multiline strings, ensure Smart Paste is enabled and Wrap Option is not set to none. You can then use Paste Pad to help edit multiline content and paste it back into the cell.
 - **Numeric Fields**: `uint` and `ulong` numeric fields are only supported on Unity versions 2022.1 and later.
 - **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. If you exit Unity or close a window, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
 - **Settings Persistence**: Settings between sessions are not persisted in Unity versions prior to 2020.1. For this reason, we recommend Unity 2020.3 and up.
@@ -353,7 +384,7 @@ To search for null Object references use a question mark character `?` as the fi
 
 ## Known Unity Bugs
 - **Inspector Layer Masks**: When trying to copy layer masks in the Inspector window of Unity, you may get an index out of range exception. It is recommended to copy/paste layer masks within Scriptable Sheets windows only.
-- **Multiple Windows**: If you have multiple windows docked at the same position, their tab order might get swapped when the states are reloaded if their instance IDs have changed internally. This can happen when maximizing editor windows or restarting Unity.
+- **Multiple Windows**: If you have multiple windows docked at the same position, the tab order or active windows themselves might get swapped when the states are reloaded. This occurs if their instance IDs have changed internally. This can happen when maximizing editor windows or restarting Unity. In some cases you'll need to re-open a docked tab that might have been replaced with a new one.
 - **Paste Pad Text Editor**: The text editor caret in the Paste Pad window will go invisible when editing large amounts of text, making it hard to select certain areas of the text.
 
 # Samples
@@ -366,7 +397,7 @@ Each Sample folder contains demo assets for testing various use cases within the
   - **Path**: `Samples~`
 
 - **Collections**
-  - **Description**: Shows how to manage arrays and lists as separate ScriptableObjects in order to maximize performance within the Scriptable Sheets Window.
+  - **Description**: Shows how to manage arrays and lists as separate ScriptableObjects in order to maximize performance within the Scriptable Sheets window.
   - **Path**: `Samples~/Collections`
   
 - **Component Explorer**
@@ -378,11 +409,11 @@ Each Sample folder contains demo assets for testing various use cases within the
   - **Path**: `Samples~/ComponentPresets`
 
 - **Deep Inheritance**
-  - **Description**: Includes sample ScriptableObjects to demo how Scriptable Sheets is able to flatten an Object hierarchy and show deeply nested fields, classes, interfaces, and generics. It also shows that property attributes like 'Header', 'Range', and 'TextArea' are ignored within the Scriptable Sheets Window itself.
+  - **Description**: Includes sample ScriptableObjects to demo how Scriptable Sheets is able to flatten an Object hierarchy and show deeply nested fields, classes, interfaces, and generics. It also shows that property attributes like 'Header', 'Range', and 'TextArea' are ignored within the Scriptable Sheets window itself.
   - **Path**: `Samples~/DeepInheritance`
 
 - **Localization**
-  - **Description**: Shows how you can use the Scriptable Sheets Window as a spreadsheet for your localized text. Demos how to display that text back in game by referencing the localized text ScriptableObjects.
+  - **Description**: Shows how you can use the Scriptable Sheets window as a spreadsheet for your localized text. Demos how to display that text back in game by referencing the localized text ScriptableObjects.
   - **Path**: `Samples~/Localization`
 
 - **RPG**
