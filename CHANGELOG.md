@@ -6,6 +6,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.5.0] - 2025-04-24
+### Features
+- Scriptable Sheets windows can now be renamed, opened, deleted, and cloned via the context menu.
+- Session state cache now tracks and restores column widths.
+- New popup for toggling column visibility, accessible via the context menu or by clicking the column limit indicator on the toolbar.
+- New experimental setting to override rendering behavior per serialized property type.
+- New setting to specify an escape option for wrapper characters within wrapped cells.
+- Added a progress bar during Object scanning, with an option to disable it.
+- Added support for finding assets under the Packages folder.
+- Added support for creating ScriptableObjects under mutable Packages.
+- Added support for deleting assets under mutable Packages.
+- New scan path option to scan for Objects under both Assets and Packages.
+
+### Fixes
+- Auto select now triggers when changing types.
+- Fixed auto select sometimes showing the wrong Object in the Inspector.
+- Fixed an issue where sorting sometimes appeared out of sync for sub assets.
+- Fixed an error caused by scrolling horizontally beyond the visible column limit.
+- Improved handling of ScriptableObjects with different file extensions.
+- Google Sheets Importers now properly handle double quotes that are escaped with repetition during import.
+
 ## [1.4.3] - 2025-03-10
 ### Fixes
 - Fixed an issue where importing wrapped multiline content would fail.
