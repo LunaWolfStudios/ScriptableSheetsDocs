@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.5.1] - 2025-04-25
+### Fixes
+- Fixed an argument exception caused by restoring invalid sorted column indexes.
+- Fixed an issue where column visibility toggles remained interactable after reaching the column limit.
+
 ## [1.5.0] - 2025-04-24
 ### Features
 - Scriptable Sheets windows can now be renamed, opened, deleted, and cloned via the context menu.
