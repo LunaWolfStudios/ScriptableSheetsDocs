@@ -163,7 +163,7 @@ Settings for handling data import and export.
   - **Custom**: Custom sequence to add before matching characters.
 - **Json Format**: Serialization format for importing and exporting Json.
   - **Flat**: Serializes the table elements as property paths and string values. Recommended for interchangeability between flat file formats. 
-  - **Hierarchy**: Serializes the table elements using the Object type and utilizes a layered structure.
+  - **Hierarchy**: Serializes the table elements using the Object type and utilizes a layered structure. Recommended for runtime processing.
 
 ## Object Management Settings
 Settings for scanning, creating, and filtering Objects.
