@@ -19,6 +19,30 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
   https://www.youtube.com/playlist?list=PL6G9X1zrT3BLwLA7pbgM5Aam9RrLsrBZp
 </div>
 
+## About
+
+<p align="center">
+  <img src="images/card-image-full-res.png" alt="Scriptable Sheets Title" width="600">
+</p>
+
+<p align="center">
+  <img src="images/cover-image.png" alt="Scriptable Sheets Screenshot 01" width="600">
+</p>
+
+<p align="center">
+  <img src="images/promo-column-layouts.png" alt="Scriptable Sheets Screenshot 01" width="600">
+</p>
+
+<p align="center">
+  <img src="images/promo-multi-windows.png" alt="Scriptable Sheets Screenshot 01" width="600">
+</p>
+
+<p align="center">
+  <img src="images/promo-transfer-data.png" alt="Scriptable Sheets Screenshot 01" width="600">
+</p>
+
+[Learn more](https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md)
+
 ## Screenshots
 
 <p align="center">
