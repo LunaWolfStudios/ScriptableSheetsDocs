@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.6.0] - 2025-07-01
+### Features
+- New setting to adjust the row line height.
+- New setting to toggle asset preview icons and thumbnails for object references.
+- New setting to adjust the scale mode for asset previews.
+- When editing text fields you can now add new lines with ctrl/cmd + enter.
+- Tests have been moved into a new category called Scriptable Sheets.
+- Google Sheets Importers now have an optional Scriptable Sheets window name field.
+- Improved and added various tooltips for Google Sheets Importers.
+
+### Fixes
+- Fixed an issue when trying to rename binary files with smart paste.
+
 ## [1.5.1] - 2025-04-25
 ### Fixes
 - Fixed an argument exception caused by restoring invalid sorted column indexes.
