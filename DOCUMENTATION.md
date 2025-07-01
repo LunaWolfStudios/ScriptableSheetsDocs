@@ -24,6 +24,7 @@
   - [Data Serialization and Transfer](#data-serialization-and-transfer)
   - [External Tools](#external-tools)
   - [Performance](#performance)
+  - [Unit Tests](#unit-tests)
   - [Unity](#unity)
 - [Limitations / FAQ](#limitations--faq)
   - [Known Unity Bugs](#known-unity-bugs)
@@ -204,6 +205,12 @@ Settings for the user interface, table layout, and table navigation.
   - **Friendly**: Uses the display name and property path to generate quasi-identifiers that are easy-to-read.
   - **Advanced**: Uses the full property path as-is.
 - **Lock Names**: Prevents directly editing the Object name field in the table view. Does NOT apply when pasting content or importing files.
+- **Row Line Height**: The number of vertical lines each row will use in the table. Increase to allow more room for multiline content and larger asset previews.
+- **Show Asset Previews**: Display asset previews and thumbnails in the table layout. Increase `Row Line Height` to scale the preview size.
+- **Asset Preview Scale Mode**:
+  - **Stretch To Fill**: Scales the texture to completely fill the preview.
+  - **Scale And Crop**: Scales the texture to fit the target preview while preserving the aspect ratio. Parts of the texture may be cropped.
+  - **Scale To Fit**: Scales the texture to fit entirely within the target preview while preserving the aspect ratio. Letterboxing may appear.
 - **Show Row Index**: Display the row index next to each row.
 - **Show Column Index**: Display the column index next to each column.
 - **Show Children**: Display child Object fields. This includes deeply nested child Objects.
@@ -284,6 +291,17 @@ Google Sheets Importers allow you to import data with a single click from any Go
 
 4. Click the `Import CSV from Google Sheets` button on the toolbar.
    - CSV import settings will be used with double quotes as the wrap option.
+   
+### Importer Properties
+
+Each Google Sheets Importer must define how it maps Google Sheet data to Unity objects. The following fields are available when configuring an importer:
+
+- **Full Type Name**: The fully qualified type name that this importer targets. Required for non-ScriptableObject types like `UnityEngine.GameObject` for prefabs.
+- **Mono Script**: The `MonoScript` that defines the object type this importer targets. Required if the full type name is not set.
+- **Main Asset**: Optional main asset to group this importer under. Useful for organizing Sub Assets when importing multiple types into one parent asset.
+- **Window Name**: Optional Scriptable Sheets window name that this importer targets. If set, this importer is only used when the window name matches the open Scriptable Sheets window name. If multiple importers target the same type, the importer without a window name will be used by default unless an importer with a matching window name is set.
+- **Sheet ID**: The Sheet ID from the Google Sheets URL. The Google Sheets URL must be accessible via a shared link.
+- **Sheet Name**: The name of the sheet tab inside the Google Sheet. This is case-sensitive and must match the tab name exactly.
 
 # Paste Pad
 
@@ -302,6 +320,7 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 - **Column Headers**: Right-click the column headers to hide/show them individually.
 - **Context Menu**: Right-click the Window name to access the context menu in Unity. The context menu for the Scriptable Sheets window contains a number of shortcuts and features as outlined under the [Context Menu](#context-menu) section.
 - **Editing Text**: Press 'ENTER' when editing an input field to get full control over the text position within the input field. Press 'ENTER' again to apply your changes. Press 'ESC' to cancel.
+- **Multiline Text**: To add newlines in text fieds press 'ENTER' to select the text field then hold 'CTRL' or 'CMD' and press 'ENTER' again to add a newline.
 - **Navigating Cells**: When a cell is focused you can navigate to the next cell with arrow keys, tab, or pressing enter twice (if you're in an input field). Hold shift to go in the opposite direction. The scroll view should automatically update as you scroll, but occassionally it can get stuck, especially in cases where the next cell is a null array element.
 
 ## Advanced Search Filtering
@@ -351,6 +370,13 @@ To search for null Object references use a question mark character `?` as the fi
 - **Visible Columns**: You can right-click the column header to hide/show any column. There are also buttons on the left side to hide/show all columns at once. If the visible columns counter turns yellow that means the visible columns limit has been reached, but there are more columns to be displayed. You can increase this under `Settings -> Workload -> Visible Column Limit`.
 - **Window Size and Virutalization**: If you have a lot of rows and columns, and hiding them is not an option. Then try shrinking the Window size so they aren't all rendered on every Repaint. The "Virtualization" setting will only render the cells in the Scroll View.
 
+## Unit Tests
+Scriptable Sheets includes several hundred Unit Tests that cover key parts of the tool. These tests ensure that everything is working as expected and can serve as helpful references if you're making your own modifications or extending functionality.
+
+All tests are grouped under the "Scriptable Sheets" category in Unity’s Test Runner. If you prefer not to see them during testing, simply disable this category from the Test Runner UI.
+
+To completely remove the Unit Tests from your project, you can delete the `Tests` folder located at `Packages/com.lunawolfstudios.scriptablesheets/Tests`.
+
 ## Unity
 - **Additional Unity Types**: Additional Unity types like GUISkins and TimelineAssets can be found under the 'Assembly' Scan Option setting. If an instance of those types already exists then 'Default' Scan Option should pick them up as well. If you can't find a specific Unity Type it could be that it's nested under another type (e.g. Render Textures will be under Texture).
 - **Addressable Asset References**: Under `Settings -> User Interface` you can toggle "Show Read-only" to view the the internal values of Addressable Asset References. To view the standard Object fields disable "Show Read-only".
@@ -361,6 +387,7 @@ To search for null Object references use a question mark character `?` as the fi
 - **Unity 6**: All editor windows are created as floating windows at first. You can grab the inner window and drag it to dock it.
 
 # Limitations / FAQ
+- **Addressable Asset Previews**: Asset preview icons and thumbnails will not appear for addressables or other generic types.
 - **Array Copying**: Does not support copying an entire array from the Inspector window and pasting it across the equivalent array cells in the Scriptable Sheets window. Use the copy row button within the Scriptable Sheets window instead.
 - **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout. Under `Settings -> User Interface` you can toggle "Show Arrays" followed by "Override Size", and then set a specific number of indices to display for each array.
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ or across Addressable `AssetReference` types.
@@ -376,7 +403,7 @@ To search for null Object references use a question mark character `?` as the fi
 - **Json Import**: You cannot paste Json directly across the table, rows, or columns. You can paste Json into single cells for certain Object fields, Animation Curves, and Gradients with the caveat being that the Json was copied from the Inspector or Scriptable Sheets window. You can copy to Json, save to a Json file, or import from a Json file you exported.
 - **JsonDotNet Converters**: JsonDotNet converters do not apply, such as `JsonConverter(typeof(StringEnumConverter))`. For String to Enum conversion, enable the "Use String Enums" setting.
 - **Mixed Value Fields**: Certain mixed value fields on default UnityEngine Components will not render as a flagged enum within Scriptable Sheets. Due to the underlying backing field being inaccessible.
-- **Multiline Strings**: When working with multiline strings, ensure Smart Paste is enabled and Wrap Option is not set to none. You can then use Paste Pad to help edit multiline content and paste it back into the cell.
+- **Multiline Text Fields**: When working with multiline strings you can adjust the "Row Line Height" under `Settings -> User Interface`.
 - **Numeric Fields**: `uint` and `ulong` numeric fields are only supported on Unity versions 2022.1 and later.
 - **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. If you exit Unity or close a window, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
 - **Settings Persistence**: Settings between sessions are not persisted in Unity versions prior to 2020.1. For this reason, we recommend Unity 2020.3 and up.
