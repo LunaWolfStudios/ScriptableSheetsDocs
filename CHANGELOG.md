@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.7.0] - 2025-07-07
+### Features
+- Instances are now shown under their concrete base classes in addition to their instance type.
+- Added pagination to the column visibility popup.
+- New workload setting to specify the max number of properties to iterate over.
+- Improved setup guidance and validation for Google Sheets Importers.
+- Asset previews and thumbnails for root objects now display under the relevant Name column.
+
+### Fixes
+- Batch creating Scriptable Objects is now faster.
+- Fixed a crash when iterating over arrays with thousands of elements.
+- Fixed Google Sheets Importers not appearing under Assembly scan option.
+- Fixed a gui layout error message when using the Assembly scan option.
+- Improved performance of the column visibility popup.
+
 ## [1.6.0] - 2025-07-01
 ### Features
 - New setting to adjust the row line height.
