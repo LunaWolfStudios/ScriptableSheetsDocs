@@ -60,6 +60,7 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 - **Pagination**: Navigate large amounts of Objects with intuitive controls for changing between pages.
 - **Hide/Show Columns**: Hide or show specific columns to focus on the data that matters most to you.
 - **Resizable Columns**: Adjust column widths to fit your data for a customized view. Includes preset buttons for stretching, compacting, and expanding columns.
+- **Adjustable Row Height**: Change the row height to fit your content, including multiline text and asset previews like textures, materials, and models.
 - **Sorting**: Sort Unity Objects by any column and property type in the table view, even colors, gradients, animation curves, and read-only fields.
 - **Multiple Windows**: Open multiple Scriptable Sheet windows simultaneously, enabling efficient context switching between Unity Object types.
 - **Recent Pins**: Recently viewed Unity Object types can be auto pinned for quick access.
@@ -215,7 +216,7 @@ Settings for the user interface, table layout, and table navigation.
 - **Show Column Index**: Display the column index next to each column.
 - **Show Children**: Display child Object fields. This includes deeply nested child Objects.
 - **Show Arrays**: Display the elements of arrays and other collections as individual columns. Requires the "Show Children" setting to be enabled.
-- **Override Array Size**: Enable to override the number of columns displayed for each array.
+- **Override Array Size**: Enable to override the number of columns displayed for each array. Max 1000.
 - **Array Size**: Specify how many columns to display for arrays and other collections.
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
@@ -236,6 +237,7 @@ Settings that affect computational performance. Modify with caution to optimize 
 - **Auto Update**: Auto updates values as they are changed in the Inspector window.
 - **Debug**: Display debug log messages in the console.
 - **Virtualization**: Improves performance by rendering only the cells within the visible scroll area.
+- **Max Iterations**: Max number of properties to iterate over when generating the column layout. Raising this too high can cause hangs on large arrays or deeply nested Objects. This is in increments of 1000.
 - **Max Visible Cells**: Total number of cells that can be visible at a time. Capped for performance.
 - **Rows Per Page**: Max rows to display per page. Capped for performance.
 - **Visible Column Limit**: Max columns to display at a time. Capped for performance.
@@ -413,6 +415,7 @@ To completely remove the Unit Tests from your project, you can delete the `Tests
 - **Inspector Layer Masks**: When trying to copy layer masks in the Inspector window of Unity, you may get an index out of range exception. It is recommended to copy/paste layer masks within Scriptable Sheets windows only.
 - **Multiple Windows**: If you have multiple windows docked at the same position, the tab order or active windows themselves might get swapped when the states are reloaded. This occurs if their instance IDs have changed internally. This can happen when maximizing editor windows or restarting Unity. In some cases you'll need to re-open a docked tab that might have been replaced with a new one.
 - **Paste Pad Text Editor**: The text editor caret in the Paste Pad window will go invisible when editing large amounts of text, making it hard to select certain areas of the text.
+- **Preview Rendering**: When a gradient field uses a header attribute or a custom property drawer, the asset preview for the root name column may fail to display.
 
 # Samples
 You can import samples under `Window -> Package Manager` find 'LWS Scriptable Sheets' go to Samples, select which Sample you'd like to import and click 'Import'.
