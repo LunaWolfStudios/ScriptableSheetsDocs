@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.7.1] - 2025-07-08
+### Fixes
+- Fixed an ArgumentException when destroying Scriptable Objects immediately after they are created.
+- Fixed a missing class attribute error when using Scriptable Objects as Sub Assets of non-ScriptableObject types.
+- Fixed an issue where you could instantiate UnityEditorInternal types causing an error.
+- Fixed an issue where you could query Scriptable Singletons causing an error.
+
 ## [1.7.0] - 2025-07-07
 ### Features
 - Instances are now shown under their concrete base classes in addition to their instance type.
