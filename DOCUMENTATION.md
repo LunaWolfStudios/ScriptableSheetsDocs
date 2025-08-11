@@ -150,7 +150,7 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 Settings for handling data import and export.
 
 - **Smart Paste**: Enhance pasting by distributing flat file data across table cells using the specified delimiters.
-- **Headers**: Include header names when transferring flat file data.
+- **Headers**: Include header names when transferring flat file data. When enabled, the first row is discarded on import if it matches the header names (ignoring whitespace and letter casing).
 - **Page Rows Only**: Restrict data transfer to the rows on the current page only.
 - **Visible Columns Only**: Restrict data transfer to visible columns only.
 - **Remove Empty Rows**: Remove empty rows when parsing flat file data.
