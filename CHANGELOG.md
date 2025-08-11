@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.7.2] - 2025-08-11
+### Fixes
+- Fixed header setting to allow more flexible matching on import, ignoring whitespace and case differences.
+
 ## [1.7.1] - 2025-07-08
 ### Fixes
 - Fixed an ArgumentException when destroying Scriptable Objects immediately after they are created.
