@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.8.0] - 2025-11-22
+### Features
+- ScriptableObject fields with no assigned asset now include an option to create and assign a new instance.
+- Unity's Localization fields now show intuitive table and entry fields instead of raw IDs.
+- Increased the max override size for arrays.
+- Newly created Objects are now auto selected.
+
+### Fixes
+- Fixed an issue where Google Sheets Importers ignored the visible columns setting.
+
 ## [1.7.2] - 2025-08-11
 ### Fixes
 - Fixed header setting to allow more flexible matching on import, ignoring whitespace and case differences.
