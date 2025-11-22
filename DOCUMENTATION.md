@@ -171,7 +171,7 @@ Settings for handling data import and export.
 Settings for scanning, creating, and filtering Objects.
 
 - **Use Expansion**: Use variable expansion when naming newly created Objects.
-  - **{i}**: Becomes the index value. The index value always starts at the specified `Starting Index` each time you create new Objects.
+  - **{i}**: Becomes the index value. The index value always starts at the specified "Starting Index" each time you create new Objects.
   - **{t}**: Becomes the type value. This is the default name used when creating a new Object.
 - **Starting Index**: Starting index when using `{i}` for the index value.
 - **Index Padding**: Ensures the index value has a minimum number of digits by adding leading zeros as needed when using `{i}`. For example setting this to `3` would ensure an index value with `3` digits like `001`.
@@ -190,7 +190,7 @@ Settings for scanning, creating, and filtering Objects.
     - **All**: Selects both the Assets and Packages folders.
   - **Scan Path**: The folder path to scan for Object instances. Use this to narrow your search and improve scan times.
   - **Show Progress Bar**: Display a progress bar during Object scanning.
-  - **Root Prefabs Only**: Scan only for Components that are directly attached to root Prefab assets. When enabled nested Objects and their Components will be ignored. If disabled it's recommended to enable `Show Asset Path` to provide insight on which root asset you're changing.
+  - **Root Prefabs Only**: Scan only for Components that are directly attached to root Prefab assets. When enabled nested Objects and their Components will be ignored. If disabled it's recommended to enable "Show Asset Path" to provide insight on which root asset you're changing.
 - **Searching**: Settings for searching Objects.
   - **Case Sensitive**: Search for Objects using exact letter casing.
   - **Starts With**: Search for Objects that start with the search text entered.
@@ -207,7 +207,7 @@ Settings for the user interface, table layout, and table navigation.
   - **Advanced**: Uses the full property path as-is.
 - **Lock Names**: Prevents directly editing the Object name field in the table view. Does NOT apply when pasting content or importing files.
 - **Row Line Height**: The number of vertical lines each row will use in the table. Increase to allow more room for multiline content and larger asset previews.
-- **Show Asset Previews**: Display asset previews and thumbnails in the table layout. Increase `Row Line Height` to scale the preview size.
+- **Show Asset Previews**: Display asset previews and thumbnails in the table layout. Increase "Row Line Height" to scale the preview size.
 - **Asset Preview Scale Mode**:
   - **Stretch To Fill**: Scales the texture to completely fill the preview.
   - **Scale And Crop**: Scales the texture to fit the target preview while preserving the aspect ratio. Parts of the texture may be cropped.
@@ -216,7 +216,7 @@ Settings for the user interface, table layout, and table navigation.
 - **Show Column Index**: Display the column index next to each column.
 - **Show Children**: Display child Object fields. This includes deeply nested child Objects.
 - **Show Arrays**: Display the elements of arrays and other collections as individual columns. Requires the "Show Children" setting to be enabled.
-- **Override Array Size**: Enable to override the number of columns displayed for each array. Max 1000.
+- **Override Array Size**: Enable to override the number of columns displayed for each array. Supports up to 5000 entries per array, with an additional column limit determined by "Max Iterations" under Workload Settings.
 - **Array Size**: Specify how many columns to display for arrays and other collections.
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
@@ -344,9 +344,9 @@ By default, the search bar filters Objects by name. Scriptable Sheets also suppo
 
 Property searches can be performed on any column within Scriptable Sheets. Ensure you use the full property path, with exact casing, and avoid extra whitespace.
 
-The contains filter operations will adhere to your `Search Settings`. This allows you to filter for properties that match partial values.
+The contains filter operations will adhere to your "Search Settings". This allows you to filter for properties that match partial values.
 
-When performing property searches on enums you can enable `Use String Enums` to filter enum values by string. Partial value searches do not work with string enum values.
+When performing property searches on enums you can enable "Use String Enums" to filter enum values by string. Partial value searches do not work with string enum values.
 
 To search for null Object references use a question mark character `?` as the filter value. Example `p:myObject=?`.
 
