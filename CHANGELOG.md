@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.9.0] - 2026-03-12
+### Features
+- New Best Fit setting that displays the maximum size of each array.
+- Override Array Size is now enabled by default.
+- Added buttons to add or remove elements from arrays.
+- Added column header context menu items to hide, copy, or filter by the selected column.
+- Added support for docking the Actions and Name columns via their context menus.
+- Added scan settings to exclude specific folders and asset types.
+- Search bar now expands based on the length of the search text.
+
+### Fixes
+- Column header context menu now lists columns with the same name separately.
+- Fixed an issue causing the column headers to grow with the row height.
+- Fixed an issue with the column visibility popup horizontal scrollbar not appearing.
+- Fixed a Unity warning that occurred when too many context menu items were present.
+- Fixed an issue where showing the row index could cause the Actions column to overlap Name.
+
 ## [1.8.0] - 2025-11-22
 ### Features
 - ScriptableObject fields with no assigned asset now include an option to create and assign a new instance.
