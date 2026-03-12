@@ -9,6 +9,7 @@
 - [Setup](#setup)
 - [Toolbar Buttons](#toolbar-buttons)
 - [Context Menu](#context-menu)
+- [Column Context Menu](#column-context-menu)
 - [Scriptable Sheets Settings](#scriptable-sheets-settings)
   - [Data Transfer Settings](#data-transfer-settings)
   - [Object Management Settings](#object-management-settings)
@@ -144,6 +145,13 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Copy**: Copies the Scriptable Sheet content this is identical to the 'Copy' button.
 - **Copy Json**: Copy content as Json.
 
+## Column Context Menu
+- **Dock Column**: Docks the column so it remains visible while horizontally scrolling. Only the Actions and Name columns can be docked. When docked, keyboard navigation (arrow keys) continues to follow the normal column order rather than jumping directly to the docked column, and you will need to use the scrollbar to reverse direction.
+- **Hide Column**: Hides the column that was right-clicked.
+- **Copy Column**: Copies the contents of the column to the clipboard. This behaves the same as focusing the column and using the Copy Column button.
+- **Copy Property Path**: Copies the full serialized property path associated with the column.
+- **Filter by property**: Clears the search bar and inserts a property filter for the selected column's property path, allowing you to quickly filter results based on that property.
+
 # Scriptable Sheets Settings
 
 ## Data Transfer Settings
@@ -191,6 +199,8 @@ Settings for scanning, creating, and filtering Objects.
   - **Scan Path**: The folder path to scan for Object instances. Use this to narrow your search and improve scan times.
   - **Show Progress Bar**: Display a progress bar during Object scanning.
   - **Root Prefabs Only**: Scan only for Components that are directly attached to root Prefab assets. When enabled nested Objects and their Components will be ignored. If disabled it's recommended to enable "Show Asset Path" to provide insight on which root asset you're changing.
+  - **Excluded Paths**: Folders to exclude from asset scanning. Paths are case-insensitive and recursive. Must start from the root of the Unity project. Example: `Assets/MyFolder` or `Packages/MyPackage/`. Types discovered via Assembly "Scan Option" are included even if all their instances are in excluded folders. Rescan after changing exclusions.
+  - **Excluded Full Type Names**: Full type names and namespaces to exclude from scanning. Types are case-insensitive and recursive. Example: `MyNamespace.MyScriptableObject`. Rescan after changing exclusions.
 - **Searching**: Settings for searching Objects.
   - **Case Sensitive**: Search for Objects using exact letter casing.
   - **Starts With**: Search for Objects that start with the search text entered.
@@ -216,8 +226,9 @@ Settings for the user interface, table layout, and table navigation.
 - **Show Column Index**: Display the column index next to each column.
 - **Show Children**: Display child Object fields. This includes deeply nested child Objects.
 - **Show Arrays**: Display the elements of arrays and other collections as individual columns. Requires the "Show Children" setting to be enabled.
-- **Override Array Size**: Enable to override the number of columns displayed for each array. Supports up to 5000 entries per array, with an additional column limit determined by "Max Iterations" under Workload Settings.
-- **Array Size**: Specify how many columns to display for arrays and other collections.
+- **Override Array Size**: Enable to override the minimum number of columns displayed for each array. When disabled it will use the first non-sorted Objects array sizes. Disable to improve performance with arrays.
+- **Best Fit Array Size**: Enable to use the largest array size found within all Objects for each array. Disable to improve performance with arrays. The maximum size is still capped by "Max Iterations" under Workload Settings.
+- **Array Min Size**: Specify the minimum number of columns to display for arrays and other collections. Supports up to 5000 entries per array, with an additional column limit determined by "Max Iterations" under Workload Settings.
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
 - **Show Read-only**: Display read-only fields for each Object.
@@ -319,7 +330,7 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 # Tips
 
 ## Additional Controls
-- **Column Headers**: Right-click the column headers to hide/show them individually.
+- **Column Headers**: Right-click the column headers to hide/show them individually. Right-clicking a specific column header will also bring up additional [Column Context Menu](#column-context-menu) controls.
 - **Context Menu**: Right-click the Window name to access the context menu in Unity. The context menu for the Scriptable Sheets window contains a number of shortcuts and features as outlined under the [Context Menu](#context-menu) section.
 - **Editing Text**: Press 'ENTER' when editing an input field to get full control over the text position within the input field. Press 'ENTER' again to apply your changes. Press 'ESC' to cancel.
 - **Multiline Text**: To add newlines in text fieds press 'ENTER' to select the text field then hold 'CTRL' or 'CMD' and press 'ENTER' again to add a newline.
@@ -391,14 +402,14 @@ To completely remove the Unit Tests from your project, you can delete the `Tests
 # Limitations / FAQ
 - **Addressable Asset Previews**: Asset preview icons and thumbnails will not appear for addressables or other generic types.
 - **Array Copying**: Does not support copying an entire array from the Inspector window and pasting it across the equivalent array cells in the Scriptable Sheets window. Use the copy row button within the Scriptable Sheets window instead.
-- **Array Display**: The first non-sorted Object on the first page drives the column layout. When showing arrays, this means only up to that Object's array sizes will be displayed. This avoids performance issues with a large number of Objects, arrays, and nested arrays. If you edit any of this Objects array sizes in the table view it will auto-refresh the column layout with the new array sizes, but if you edit it externally like in the Inspector window it will not update the column layout. Under `Settings -> User Interface` you can toggle "Show Arrays" followed by "Override Size", and then set a specific number of indices to display for each array.
+- **Array Display**: When "Override Array Size" and "Best Fit" are disabled, the column layout is determined by the first non-sorted Object on the first page. For arrays, only indices up to that Object's array size will be displayed. This avoids performance issues when working with large numbers of Objects, arrays, or nested arrays. If you edit that Object's array size within the table view, the column layout will automatically refresh to reflect the new size. However, if the array size is changed externally (such as in the Inspector), the layout will not automatically update. You can adjust array display behavior under `Settings -> User Interface`.
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ or across Addressable `AssetReference` types.
 - **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
 - **Base64 Encoding**: Animation curves and gradients will be serialized as base64 strings when using wrap options that are unsupported with Json like double quotes.
 - **Column Widths**: Column widths are persisted per column in Unity 2021.2 and newer. Older versions of Unity do not support this due to API limitations.
 - **Copying Cells**: Copying a single cell will not include headers.
 - **Formulas**: There are no formulas for filling cells.
-- **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows. You can override this behaviour using the "Rendering Overrides" setting under [Experimental Settings](#experimental-settings). Overriding the rendering behaviour may disrupt the table layout, use with caution.
+- **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows. You can override this behavior using the "Rendering Overrides" setting under [Experimental Settings](#experimental-settings). Overriding the rendering behavior may disrupt the table layout, use with caution.
 - **Inspector Fields**: Copying certain property fields from the Scriptable Sheets window does not always allow you to paste directly into the Inspector window. It is recommended to paste the value within the Scriptable Sheets window for it to work as expected.
 - **Json Flat File Import**: When importing a Json flat file where you modified the number of array elements, ensure you update the size property both in Scriptable Sheets and in the file prior to import. Otherwise, the array values will be null.
 - **Json Hierarchy Serialization**: The visible columns setting is ignored when using hierarchy Json serialization because it serializes the entire structure of each Object.
