@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.9.1] - 2026-06-17
+### Fixes
+- Fixed compiler errors in Unity 6.5 and warnings in Unity 6.4 caused by the deprecated GetInstanceID API.
+- Fixed serialization analyzer warnings in Unity 6.5 for the settings and window session state types.
+- Pasted and imported percentage values now parse into number fields instead of failing: float fields convert to the fractional value (3% becomes 0.03), while integer fields strip the percent sign (3% becomes 3).
+
 ## [1.9.0] - 2026-03-12
 ### Features
 - New Best Fit setting that displays the maximum size of each array.
