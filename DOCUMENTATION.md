@@ -18,7 +18,9 @@
   - [Experimental Settings](#experimental-settings)
   - [Google Sheets Importers](#google-sheets-importers)
 - [Paste Pad](#paste-pad)
-  - [Context Menu](#context-menu-1)
+  - [Paste Pad Toolbar](#paste-pad-toolbar)
+  - [Paste Pad Context Menu](#paste-pad-context-menu)
+  - [Paste Pad Settings](#paste-pad-settings)
 - [Tips](#tips)
   - [Additional Controls](#additional-controls)
   - [Advanced Search Filtering](#advanced-search-filtering)
@@ -48,8 +50,9 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 - **Copy/Paste**: Copy entire tables, single columns, rows, or cells into any flat file format. Paste data seamlessly back into Scriptable Sheets, simplifying complex data transfers across serialized fields.
 - **Serialization**: Visualize serializable classes, complex data, and serialized property types within a multi-column view.
 - **Complex Data**: Handles complex Objects with inherited, nested, and generic fields.
+- **Managed References**: Edit serialize reference fields with a per-row type dropdown and a column for every concrete subtype's fields.
 - **Object References**: Supports Unity Object types such as AudioClips, Materials, Prefabs, ScriptableObjects, and more!
-- **Collections**: Basic support for serializable arrays and lists (not recommended for very large or deeply nested collections).
+- **Collections**: View and edit serializable arrays and lists in the grid, or flip a single array or list into its own Table (not recommended for very large or deeply nested collections).
 - **Read-only fields**: View Asset Paths, GUIDs, and read-only fields for any Unity Object.
 - **Sub Assets**: Manage and filter Sub Assets for ScriptableObject types.
 - **Addressable Assets**: Compatible with Addressable Asset References and their Sub Assets.
@@ -126,8 +129,8 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Save to Disk**: Save the entire table using the expected Data Transfer settings. It will attempt to auto-detect the column delimiter based on the file format type, similar to importing. You can also save json files using the '.json' file extension.
 - **New Paste Pad**: Open a new Paste Pad window.
 - **First Page**: Navigate to the first page of Objects.
-- **Previous Page**: Navigate to the previous page of Objects.
-- **Next Page**: Navigate to the next page of Objects.
+- **Previous Page**: Navigate to the previous page of Objects. Shortcut: Ctrl/Cmd + Left Arrow.
+- **Next Page**: Navigate to the next page of Objects. Shortcut: Ctrl/Cmd + Right Arrow.
 - **Last Page**: Navigate to the last page of Objects.
 - **Select**: Select an Object in the Inspector and Project windows.
 - **Delete**: Delete an Object from the editor.
@@ -149,8 +152,12 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Dock Column**: Docks the column so it remains visible while horizontally scrolling. Only the Actions and Name columns can be docked. When docked, keyboard navigation (arrow keys) continues to follow the normal column order rather than jumping directly to the docked column, and you will need to use the scrollbar to reverse direction.
 - **Hide Column**: Hides the column that was right-clicked.
 - **Copy Column**: Copies the contents of the column to the clipboard. This behaves the same as focusing the column and using the Copy Column button.
-- **Copy Property Path**: Copies the full serialized property path associated with the column.
-- **Filter by property**: Clears the search bar and inserts a property filter for the selected column's property path, allowing you to quickly filter results based on that property.
+- **Copy Property Path**: Copies the full serialized property path associated with the column. Disabled for the Collection Table Group Name, Index, and Value columns, which have no serialized property path.
+- **Filter by property**: Clears the search bar and inserts a property filter for the selected column's property path, allowing you to quickly filter results based on that property. For the Collection Table Group Name, Index, and Value columns it inserts a column reference (such as `p:$B`) instead, since those columns have no property path.
+- **Header Color**: Opens a color picker to tint the selected column's header label, updating in realtime as you adjust it. Available on every column, including the Actions column, and takes priority over the docked column color when set. Saved per column, type, and sheet.
+- **Reset Header Color**: Clears the custom header color for the selected column, restoring the default. Only shown when a custom color is set.
+- **Managed Type Columns**: Only shown on a `[SerializeReference]` column. Hover to reveal a toggle for every concrete subtype of the managed reference, all enabled by default. Toggling a subtype off hides the columns contributed by that subtype's fields and triggers a column refresh. This filters columns only, it does not hide any rows, so Objects assigned a disabled subtype still appear (their disabled fields simply have no columns). Shared fields remain visible as long as another enabled subtype declares them. The disabled subtypes are saved per column, type, and sheet.
+- **Map Asset Preview**: Shown on any column for types with object reference properties, including Addressable Asset References. Hover to reveal those properties plus a Default option, and select one to replace that column's asset preview with the chosen reference's preview. Referenced ScriptableObjects expand into submenus so you can map a preview from a child Object's property, such as a Unit using its referenced Weapon's icon. How many levels of child ScriptableObjects are explored is controlled by the "Asset Preview Depth" under [Workload](#workload-settings). This gives each Object a distinct preview pulled from a reachable reference, such as a texture, material, or addressable. Only one source can be selected per column, Default restores the column's own preview, and rows whose reference is unassigned fall back to that default. Requires "Show Asset Previews" enabled with an increased "Row Line Height" to be visible. The selected sources are saved per type and sheet. The menu does not look into array or list elements, and it does not recurse through Addressable Asset References, so an Addressable can be used as a preview source but its own properties are not explored. The option is hidden while a Collection Table is active, since its mappings apply to owner level fields rather than the flattened element rows.
 
 # Scriptable Sheets Settings
 
@@ -187,6 +194,8 @@ Settings for scanning, creating, and filtering Objects.
 - **New Object Prefix**: Prefix for newly created Objects.
 - **New Object Suffix**: Suffix for newly created Objects.
 - **Default Main Asset**: New ScriptableObjects will be created as a Sub Asset of the specified default Main Asset.
+- **Auto Generate**: Automatically create new ScriptableObjects when importing or pasting more rows than there are existing Objects. Enough Objects are generated to match the row count, using the new Object naming and path settings above, before the data is parsed. This removes the need to manually count rows and create Objects beforehand. Only applies to creatable ScriptableObject types and only adds Objects, it never deletes existing Objects when there are fewer rows. When "Page Rows Only" is enabled only enough Objects are generated to fill the remaining room on the current page up to the "Rows Per Page" limit, since the parse is restricted to that page. For a single pass over an entire data set, disable "Page Rows Only" so generation and parsing span every row.
+  - **Confirm Generation**: Display a confirmation message showing how many new Objects will be created before generating them.
 - **Scanning**: Settings for Scanning Objects.
   - **Scan Option**: The method used when scanning or rescanning for ScriptableObject types and instances of those types.
     - **Default**: Scans for types based on existing instances of the selected Object type.
@@ -199,6 +208,7 @@ Settings for scanning, creating, and filtering Objects.
   - **Scan Path**: The folder path to scan for Object instances. Use this to narrow your search and improve scan times.
   - **Show Progress Bar**: Display a progress bar during Object scanning.
   - **Root Prefabs Only**: Scan only for Components that are directly attached to root Prefab assets. When enabled nested Objects and their Components will be ignored. If disabled it's recommended to enable "Show Asset Path" to provide insight on which root asset you're changing.
+  - **Hidden Sub Assets**: Scan hidden sub-assets that aren't shown under their main asset in the Project window. When disabled only visible sub-assets are scanned. When enabled hidden sub-assets are included, but any with a missing script will log a Unity warning that can't be suppressed (for example a URP Volume Profile's Volume Components).
   - **Excluded Paths**: Folders to exclude from asset scanning. Paths are case-insensitive and recursive. Must start from the root of the Unity project. Example: `Assets/MyFolder` or `Packages/MyPackage/`. Types discovered via Assembly "Scan Option" are included even if all their instances are in excluded folders. Rescan after changing exclusions.
   - **Excluded Full Type Names**: Full type names and namespaces to exclude from scanning. Types are case-insensitive and recursive. Example: `MyNamespace.MyScriptableObject`. Rescan after changing exclusions.
 - **Searching**: Settings for searching Objects.
@@ -215,15 +225,21 @@ Settings for the user interface, table layout, and table navigation.
   - **Default**: Uses Unity's default display names.
   - **Friendly**: Uses the display name and property path to generate quasi-identifiers that are easy-to-read.
   - **Advanced**: Uses the full property path as-is.
-- **Lock Names**: Prevents directly editing the Object name field in the table view. Does NOT apply when pasting content or importing files.
+- **Lock Names**: Prevents directly editing the Object name field in the table view. Does NOT apply when pasting content or importing files. Does not apply to Collection Tables, which always lock their Group Name column.
 - **Row Line Height**: The number of vertical lines each row will use in the table. Increase to allow more room for multiline content and larger asset previews.
-- **Show Asset Previews**: Display asset previews and thumbnails in the table layout. Increase "Row Line Height" to scale the preview size.
+- **Show Asset Previews**: Display asset previews and thumbnails in the table layout, including Addressable Asset References. Increase "Row Line Height" to scale the preview size.
 - **Asset Preview Scale Mode**:
   - **Stretch To Fill**: Scales the texture to completely fill the preview.
   - **Scale And Crop**: Scales the texture to fit the target preview while preserving the aspect ratio. Parts of the texture may be cropped.
   - **Scale To Fit**: Scales the texture to fit entirely within the target preview while preserving the aspect ratio. Letterboxing may appear.
 - **Show Row Index**: Display the row index next to each row.
+- **Row Index Format**: When "Show Row Index" is enabled, choose how the row index is labeled.
+  - **Alpha**: Spreadsheet style letters (A, B, C, ... AA, AB).
+  - **Numeric**: The zero based row number.
 - **Show Column Index**: Display the column index next to each column.
+- **Column Index Format**: When "Show Column Index" is enabled, choose how the column index is labeled.
+  - **Alpha**: Spreadsheet style letters (A, B, C, ... AA, AB).
+  - **Numeric**: The zero based column number.
 - **Show Children**: Display child Object fields. This includes deeply nested child Objects.
 - **Show Arrays**: Display the elements of arrays and other collections as individual columns. Requires the "Show Children" setting to be enabled.
 - **Override Array Size**: Enable to override the minimum number of columns displayed for each array. When disabled it will use the first non-sorted Objects array sizes. Disable to improve performance with arrays.
@@ -232,6 +248,8 @@ Settings for the user interface, table layout, and table navigation.
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
 - **Show Read-only**: Display read-only fields for each Object.
+- **Collection Tables**: Enable a toolbar dropdown that expands a single array or list field into a table of rows, grouped by their owning Object, instead of displaying its elements as columns. Each element becomes a row and the element's fields become the columns. Top-level collections plus collections one level deep inside a serializable class are selectable. Selecting "None" from the dropdown keeps the default column behavior with no effect on the default view. "Show Children" and "Show Arrays" control whether nested fields and arrays appear within the table.
+- **Managed References**: Display columns for the fields of every concrete subtype assigned to a serialize reference field, along with a per-row dropdown to view or change each Object's concrete type. Changing the type requires Unity 2021.2 or newer.
 - **Sub Asset Filters**: Display a Sub Asset filter dropdown with all the Main Assets that contain the selected ScriptableObject type.
 - **Table Navigation**: Settings for navigating the table view.
   - **Auto Scroll**: Auto updates the scroll view when scrolling with keyboard arrows.
@@ -248,6 +266,7 @@ Settings that affect computational performance. Modify with caution to optimize 
 - **Auto Update**: Auto updates values as they are changed in the Inspector window.
 - **Debug**: Display debug log messages in the console.
 - **Virtualization**: Improves performance by rendering only the cells within the visible scroll area.
+- **Asset Preview Depth**: How many levels of child ScriptableObject references the column header's "Map Asset Preview" menu explores when listing object reference properties whose preview can be shown. Higher values build larger menus.
 - **Max Iterations**: Max number of properties to iterate over when generating the column layout. Raising this too high can cause hangs on large arrays or deeply nested Objects. This is in increments of 1000.
 - **Max Visible Cells**: Total number of cells that can be visible at a time. Capped for performance.
 - **Rows Per Page**: Max rows to display per page. Capped for performance.
@@ -291,9 +310,9 @@ Google Sheets Importers allow you to import data with a single click from any Go
 
 ### Importing Data
 
-1. Ensure you have pre-created enough Scriptable Objects.
-   - Scriptable Sheets will **not** create new Scriptable Objects during import.
-   - Make sure you have the correct number of Scriptable Objects to match the rows in your Google Sheet.
+1. Ensure you have enough Scriptable Objects to match the rows in your Google Sheet.
+   - By default Scriptable Sheets will **not** create new Scriptable Objects during import, so pre-create the correct number to match the rows.
+   - Alternatively, enable "Auto Generate" under [Object Management](#object-management-settings) to create the missing Scriptable Objects automatically during import.
 
 2. Select a Scriptable Object type in Scriptable Sheets that has an importer assigned.
 
@@ -312,6 +331,7 @@ Each Google Sheets Importer must define how it maps Google Sheet data to Unity o
 - **Full Type Name**: The fully qualified type name that this importer targets. Required for non-ScriptableObject types like `UnityEngine.GameObject` for prefabs.
 - **Mono Script**: The `MonoScript` that defines the object type this importer targets. Required if the full type name is not set.
 - **Main Asset**: Optional main asset to group this importer under. Useful for organizing Sub Assets when importing multiple types into one parent asset.
+- **Collection Table Path**: Optional full property path of the collection field this importer targets, such as `m_Items` or `m_Items.m_Weapons`. When set, the importer is only used while that array or list field is expanded as a Collection Table under [User Interface](#user-interface-settings). Leave empty for importers that target the default whole-Object table.
 - **Window Name**: Optional Scriptable Sheets window name that this importer targets. If set, this importer is only used when the window name matches the open Scriptable Sheets window name. If multiple importers target the same type, the importer without a window name will be used by default unless an importer with a matching window name is set.
 - **Sheet ID**: The Sheet ID from the Google Sheets URL. The Google Sheets URL must be accessible via a shared link.
 - **Sheet Name**: The name of the sheet tab inside the Google Sheet. This is case-sensitive and must match the tab name exactly.
@@ -320,12 +340,54 @@ Each Google Sheets Importer must define how it maps Google Sheet data to Unity o
 
 Paste Pad is a lightweight text editor for Unity and included as part of Scriptable Sheets. You can open a new Paste Pad directly from the Scriptable Sheets Toolbar. You can have as many Paste Pad windows open as you'd like. Paste Pads do NOT persist across sessions. Use Paste Pad to hold various strings either copied from Scriptable Sheets or elsewhere. This text can be edited and pasted into a Scriptable Sheets table, row, column, or cell. All data in Scriptable Sheets can be exported as a string, making Paste Pad a powerful tool for quick edits.
 
-## Context Menu
+## Paste Pad Toolbar
+The toolbar provides quick access to the same actions as the context menu along with rich text formatting. Clearing and formatting are recorded with Unity's Undo system, so you can undo and redo them.
+
+The rich text buttons wrap the selected text in Unity rich text tags supported by TextMesh Pro. The wrapped text stays selected so you can apply multiple tags in a row.
+- **New**: Opens another Paste Pad window to start a new text.
+- **Copy**: Copies the text to the clipboard.
+- **Save**: Saves the text to a file.
+- **Word Wrap**: Toggles word wrap for the text on or off.
+- **Line Numbers**: Toggles line numbers on or off. The line numbers appear in a gutter on the left and are not part of the text.
+- **B**: Wraps the selected text in bold tags.
+- **I**: Wraps the selected text in italic tags.
+- **Color**: Wraps the selected text in a color tag using the color from the adjacent color field.
+- **Size**: Wraps the selected text in a size tag using the value from the adjacent size field.
+- **Find**: Reports how many times the find text occurs in the text.
+- **Replace**: Replaces every occurrence of the find text with the replace text.
+- **Aa**: Toggles case sensitivity for find and replace. Find and replace always match exactly.
+- **Clear**: Clears the text.
+
+The find and replace fields expand as you type up to a maximum width.
+
+## Paste Pad Context Menu
 - **Clear**: Clears the text of the Paste Pad.
 - **Copy**: Copies the text of the Paste Pad to the clipboard.
 - **New**: Opens another Paste Pad window to start a new text.
 - **Save**: Saves the text of the Paste Pad to a file.
 - **Word Wrap**: Toggles word wrap for the text in the Paste Pad.
+- **Open Settings Window**: Opens the Paste Pad Settings in a separate window.
+
+## Paste Pad Settings
+Paste Pad has its own settings, separate from the Scriptable Sheets settings, that define the defaults applied to each new Paste Pad window. Changing a setting in a Paste Pad window only affects that window. The defaults are stored per project under `UserSettings/PastePadSettings.asset`.
+
+You can access the Paste Pad Settings in two ways:
+- Select **Open Settings Window** from the Paste Pad context menu.
+- Open `Edit -> Preferences -> Paste Pad` (or `Unity -> Settings -> Paste Pad` on macOS).
+
+The following settings are available:
+- **Word Wrap**: The default word wrap state for new Paste Pad windows.
+- **Line Numbers**: The default line numbers state for new Paste Pad windows.
+- **Default Color**: The default color used by the Paste Pad color button.
+- **Default Size**: The default value used by the Paste Pad size button.
+- **Case Sensitive**: The default case sensitivity for find and replace in new Paste Pad windows.
+
+The settings page also includes the following actions:
+- **Save Changes to Disk**: Flushes setting changes to disk.
+- **Open File**: Opens the settings file directly with your preferred text editor.
+- **Open Folder**: Opens the UserSettings folder for this project.
+- **Reset Defaults**: Resets all Paste Pad settings to their default values. You cannot undo this action.
+- **Open Window**: Opens the Paste Pad Settings in a separate window.
 
 # Tips
 
@@ -335,6 +397,7 @@ Paste Pad is a lightweight text editor for Unity and included as part of Scripta
 - **Editing Text**: Press 'ENTER' when editing an input field to get full control over the text position within the input field. Press 'ENTER' again to apply your changes. Press 'ESC' to cancel.
 - **Multiline Text**: To add newlines in text fieds press 'ENTER' to select the text field then hold 'CTRL' or 'CMD' and press 'ENTER' again to add a newline.
 - **Navigating Cells**: When a cell is focused you can navigate to the next cell with arrow keys, tab, or pressing enter twice (if you're in an input field). Hold shift to go in the opposite direction. The scroll view should automatically update as you scroll, but occassionally it can get stuck, especially in cases where the next cell is a null array element.
+- **Play AudioClips**: AudioClip references and the AudioClip Sheet Asset Type display an inline play button to preview the clip. The button stays highlighted while playing; click it again to stop. Only one clip plays at a time, so playing another clip or letting the clip finish unhighlights the button.
 
 ## Advanced Search Filtering
 
@@ -360,6 +423,28 @@ The contains filter operations will adhere to your "Search Settings". This allow
 When performing property searches on enums you can enable "Use String Enums" to filter enum values by string. Partial value searches do not work with string enum values.
 
 To search for null Object references use a question mark character `?` as the filter value. Example `p:myObject=?`.
+
+### Chaining Property Filters
+
+Property filters can be chained together to match multiple conditions at once. Chain operators must be surrounded by spaces so they aren't confused with a literal `&` or `|` inside a value.
+
+- `&` (and): all conditions must match. Example `p:damage>200 & health<10`.
+- `|` (or): any condition can match. Example `p:rarity=Legendary | rarity=Epic`.
+
+Only the first condition needs the `p:` (or `prop:`/`property:`) prefix; the rest are written as bare `propertyPath`, operation, and value. The `&` operator binds tighter than `|`, so `a & b | c & d` is evaluated as `(a & b) | (c & d)`.
+
+Because chain operators require surrounding spaces, a value can still contain a literal `&` or `|` as long as it isn't space-padded. For example `p:name=this&that` matches the value `this&that` rather than chaining.
+
+### Referencing Columns by Index
+
+Instead of typing a full property path you can reference a column by its index using a `$` prefix. The reference resolves to that column's property path, so it can be used anywhere a property path is expected, including chained filters. Example `p:$E>0 | $B=hi`.
+
+- **Alpha**: Spreadsheet style letters such as `$A`, `$B`, `$AA`. Letters are not case sensitive.
+- **Numeric**: Zero based numbers such as `$0`, `$1`, `$5`.
+
+Both forms are always accepted regardless of your "Column Index Format" setting. Enable "Show Column Index" to display each column's index in its header.
+
+In a Collection Table the Group Name, Index, and Value columns have no serialized property path, so they can only be filtered through their column reference. For example `p:$B~=Boss` filters rows by their owning Object's name, `p:$C>=1` filters by element index, and on a leaf collection `p:$D~=fire` filters by element value.
 
 ## Data Serialization and Transfer
 - **Double Quotes**: Google Sheets may not handle double quotes within cells correctly, leading to import/export issues. It's best to set "Escape Mode" to "Repeat" to ensure proper handling when using Google Sheets.
@@ -400,16 +485,16 @@ To completely remove the Unit Tests from your project, you can delete the `Tests
 - **Unity 6**: All editor windows are created as floating windows at first. You can grab the inner window and drag it to dock it.
 
 # Limitations / FAQ
-- **Addressable Asset Previews**: Asset preview icons and thumbnails will not appear for addressables or other generic types.
 - **Array Copying**: Does not support copying an entire array from the Inspector window and pasting it across the equivalent array cells in the Scriptable Sheets window. Use the copy row button within the Scriptable Sheets window instead.
 - **Array Display**: When "Override Array Size" and "Best Fit" are disabled, the column layout is determined by the first non-sorted Object on the first page. For arrays, only indices up to that Object's array size will be displayed. This avoids performance issues when working with large numbers of Objects, arrays, or nested arrays. If you edit that Object's array size within the table view, the column layout will automatically refresh to reflect the new size. However, if the array size is changed externally (such as in the Inspector), the layout will not automatically update. You can adjust array display behavior under `Settings -> User Interface`.
 - **Arrow Key Navigation**: Cannot navigate with arrow keys across missing cells when array sizes differ or across Addressable `AssetReference` types.
-- **Automatic Object Creation**: Scriptable Sheets will not automatically create new Objects on import. Create Objects ahead of time before importing.
+- **Automatic Object Creation**: By default Scriptable Sheets will not create new Objects on import or paste, so any rows beyond the existing Objects are discarded. Enable "Auto Generate" under [Object Management](#object-management-settings) to automatically create enough ScriptableObjects to match the row count before parsing. It only applies to creatable ScriptableObject types and only adds Objects, never deletes them. With Auto Generate disabled, create the Objects ahead of time before importing.
 - **Base64 Encoding**: Animation curves and gradients will be serialized as base64 strings when using wrap options that are unsupported with Json like double quotes.
+- **Collection Tables**: Expand one array or list field into a table of rows, grouped by their owning Object. Top-level collections and collections one level deep inside a serializable class field are offered (not strings). Collections of records show a column per element field. The Group Name and Index columns are read-only, and the Group Name is always locked regardless of "Lock Names". On import, copy, and paste those two columns are still expected in the data (for example exported from column B) but are skipped, so they can never rename an owner, reindex an element, or add a new row. Nested element arrays are sized using "Best Fit" across every owner's elements. Sorting operates on the owning Objects, so the Group Name column sorts owners by name. Property filters evaluate each element, so element rows can be filtered by element fields such as `p:m_Quantity>50`. Name, GUID, and asset path filters match the owning Object. Auto Generate and the global create button do not apply in this mode. Select "None" from the dropdown to return to the default column behavior.
 - **Column Widths**: Column widths are persisted per column in Unity 2021.2 and newer. Older versions of Unity do not support this due to API limitations.
 - **Copying Cells**: Copying a single cell will not include headers.
 - **Formulas**: There are no formulas for filling cells.
-- **Ignored Elements**: Managed references, custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows. You can override this behavior using the "Rendering Overrides" setting under [Experimental Settings](#experimental-settings). Overriding the rendering behavior may disrupt the table layout, use with caution.
+- **Ignored Elements**: Custom property drawers, and property attributes are ignored within Scriptable Sheets, but should continue to work in Unity's Inspector windows. You can override this behavior using the "Rendering Overrides" setting under [Experimental Settings](#experimental-settings). Overriding the rendering behavior may disrupt the table layout, use with caution.
 - **Inspector Fields**: Copying certain property fields from the Scriptable Sheets window does not always allow you to paste directly into the Inspector window. It is recommended to paste the value within the Scriptable Sheets window for it to work as expected.
 - **Json Flat File Import**: When importing a Json flat file where you modified the number of array elements, ensure you update the size property both in Scriptable Sheets and in the file prior to import. Otherwise, the array values will be null.
 - **Json Hierarchy Serialization**: The visible columns setting is ignored when using hierarchy Json serialization because it serializes the entire structure of each Object.
@@ -438,7 +523,7 @@ Each Sample folder contains demo assets for testing various use cases within the
   - **Path**: `Samples~`
 
 - **Collections**
-  - **Description**: Shows how to manage arrays and lists as separate ScriptableObjects in order to maximize performance within the Scriptable Sheets window.
+  - **Description**: Shows how to manage arrays and lists as separate ScriptableObjects in order to maximize performance within the Scriptable Sheets Window. Also includes a CollectionTableSample with string, int, float, and custom record collections to demo Collection Tables.
   - **Path**: `Samples~/Collections`
   
 - **Component Explorer**
@@ -464,6 +549,10 @@ Each Sample folder contains demo assets for testing various use cases within the
 - **Sampler**
   - **Description**: Includes a sampler ScriptableObject and Component that have nearly every serialized property type that is supported by Scriptable Sheets.
   - **Path**: `Samples~/Sampler`
+
+- **Serialize Reference**
+  - **Description**: Includes sample ScriptableObjects with polymorphic fields to show how Scriptable Sheets displays a per-row type dropdown and a column for every concrete subtype's fields.
+  - **Path**: `Samples~/SerializeReference`
 
 - **Sub Assets**
   - **Description**: Provides sample ScriptableObjects with Sub Assets to show how Sub Assets interact with Scriptable Sheets.
