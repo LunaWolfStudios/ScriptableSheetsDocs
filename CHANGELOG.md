@@ -6,6 +6,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.10.0] - 2026-06-23
+### Features
+- Added Collection Tables to expand a single array or list field into a table of rows, grouped by Object.
+- Google Sheets Importers can now target a specific collection table.
+- Added Serialize Reference support to display columns for every concrete subtype with a per-row type dropdown.
+- Added a Managed Type Columns option to the column header context menu to toggle which Serialize Reference subtype columns are shown.
+- Added an Auto Generate setting to automatically create ScriptableObjects when importing or pasting more rows than exist.
+- Property filters can now be chained together with & (and) and | (or) operators.
+- Property filters can now reference columns by index using a $ prefix.
+- Added settings to display the row and column index using spreadsheet style letters.
+- Added an alphanumeric reference of the selected cell to the left of the search bar.
+- The selected page is now saved and restored per Object type and sheet.
+- The selected type is now remembered per Sheet Asset and restored when switching back.
+- Added Ctrl/Cmd + Left/Right Arrow shortcuts to navigate between pages.
+- Added a column header context menu option to set a custom header text color.
+- Added a Paste Pad toolbar with various actions and rich text formatting options.
+- Added a Paste Pad line number setting and a find/replace with a case sensitivity toggle.
+- Added new Paste Pad Settings Window.
+- Added an inline play button to preview AudioClips.
+- Asset previews and thumbnails now display for Addressable Asset References.
+- Added a Map Asset Preview option to the column header context menu to change asset previews.
+- Added an Asset Preview Depth workload setting to control how deep the Map Asset Preview menu explores.
+- Column header context menu actions now support undo/redo operations.
+- Added a Hidden Sub Assets setting to include hidden sub-assets that aren't shown under their main asset.
+
+### Fixes
+- Fixed the selected page resetting when entering play mode.
+- Fixed property filters on the Name field for certain Prefab Components.
+- Fixed missing script warnings logged while scanning hidden sub-assets.
+- Improved table rendering performance and reduced per-frame allocations on large sheets.
+- Improved search filtering performance.
+
 ## [1.9.1] - 2026-06-17
 ### Fixes
 - Fixed compiler errors in Unity 6.5 and warnings in Unity 6.4 caused by the deprecated GetInstanceID API.
