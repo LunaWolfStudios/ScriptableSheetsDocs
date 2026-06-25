@@ -6,6 +6,8 @@ This repository contains the latest [changelog](https://github.com/LunaWolfStudi
 
 [Table of Contents](https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#table-of-contents)
 
+[FAQ](https://github.com/LunaWolfStudios/ScriptableSheetsDocs/blob/main/DOCUMENTATION.md#faq)
+
 [Unity's End User License Agreement](https://unity.com/legal/as-terms)
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
