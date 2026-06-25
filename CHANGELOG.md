@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.10.1] - 2026-06-25
+### Fixes
+- Fixed Collection Tables not rendering serialize reference elements.
+- Added new serialize reference samples to validate fixes.
+- Fixed the Collection Table dropdown staying active when switching to a type with no instances.
+- Fixed the create button being hidden for a type with no instances after viewing a Collection Table.
+- Fixed Collection Table sorting so the Index and field columns order the element rows within each group.
+- Fixed noisy array element warnings when pasting into serialize reference fields with uneven array sizes.
+- Fixed arrow key navigation getting stuck on empty cells.
+- Fixed arrow key navigation not working properly with docked columns.
+- Fixed arrow key navigation and click selection for Addressable Asset cells.
+- Click selection on read-only cells now properly highlights the cell.
+
 ## [1.10.0] - 2026-06-23
 ### Features
 - Added Collection Tables to expand a single array or list field into a table of rows, grouped by Object.
