@@ -32,7 +32,15 @@ Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstud
 </p>
 
 <p align="center">
+  <img src="images/promo-multiple-asset-types.png" alt="Scriptable Sheets Screenshot 01" width="600">
+</p>
+
+<p align="center">
   <img src="images/promo-column-layouts.png" alt="Scriptable Sheets Screenshot 01" width="600">
+</p>
+
+<p align="center">
+  <img src="images/promo-collection-tables.png" alt="Scriptable Sheets Screenshot 01" width="600">
 </p>
 
 <p align="center">
