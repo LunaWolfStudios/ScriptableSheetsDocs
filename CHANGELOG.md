@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 Questions? Email us at [support@lunawolfstudios.com](mailto:support@lunawolfstudios.com)
 
+## [1.11.0] - 2026-07-02
+### Features
+- Added a Collection Table Depth setting to discover collections nested deeper within serializable class fields.
+- Added an option to the Project window context menu to open the selected asset in Scriptable Sheets.
+- Added the ability to double-click an Object reference to open that Object in Scriptable Sheets.
+- Added a Batch Select context menu option to open or delete multiple Sheets at once from a single popup.
+- Added a setting for Headers to always discard the first row on import regardless of column names matching.
+- Google Sheets Importers can now target a specific folder so an importer only imports into the assets within that folder.
+- The import button now shows a dropdown to choose between importers when more than one targets the selected type.
+
+### Fixes
+- Fixed a crash when toggling Show Column Index during an import.
+- Fixed import header row not being stripped when the column index was shown.
+- Fixed an asset import worker warning when Auto Generate created Objects.
+- Fixed delete not removing an auto generated Object directly after an import or paste.
+
 ## [1.10.1] - 2026-06-25
 ### Fixes
 - Fixed Collection Tables not rendering serialize reference elements.
