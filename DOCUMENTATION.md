@@ -9,6 +9,7 @@
 - [Setup](#setup)
 - [Toolbar Buttons](#toolbar-buttons)
 - [Context Menu](#context-menu)
+- [Project Window Context Menu](#project-window-context-menu)
 - [Column Context Menu](#column-context-menu)
 - [Scriptable Sheets Settings](#scriptable-sheets-settings)
   - [Data Transfer Settings](#data-transfer-settings)
@@ -143,11 +144,30 @@ Get Scriptable Sheets today and transform the way you work with Unity assets!
 - **Open Sheet**: Open a Scriptable Sheets window by name. Sheets with the same name are differentiated by their instance IDs. Cannot open a Sheet already opened.
 - **Delete Sheet**: Delete a Scriptable Sheets window by name. Sheets with the same name are differentiated by their instance IDs. Cannot delete a Sheet that is opened.
 - **Clone Sheet**: Creates and opens a copy of the selected Scriptable Sheets window by name. Sheets with the same name are differentiated by their instance IDs.
+- **Batch Select**: Opens a popup that lists every Sheet by name with a checkbox, along with Select All and Deselect All buttons. Use the Open or Delete buttons to act on the selected Sheets at once, with a confirmation before deleting. Sheets already opened in the editor are listed but not interactable since they cannot be opened or deleted.
 - **New Paste Pad Window**: Open a new Paste Pad window.
 - **Open Settings Window**: Open the Scriptable Sheets Settings window.
 - **Edit Column Visibility**: Opens a popup with toggles that enable or disable individual columns in the Scriptable Sheets editor window. Can also be opened by clicking the column limit indicator on the toolbar.
 - **Copy**: Copies the Scriptable Sheet content this is identical to the 'Copy' button.
 - **Copy Json**: Copy content as Json.
+
+## Project Window Context Menu
+Right-click any supported asset in Unity's Project window to find **Open in Scriptable Sheets** near the top of the menu. Selecting it opens the asset directly in a Scriptable Sheets window and selects its row without any manual type picking, paging, or searching required.
+
+The Scriptable Sheets window that the asset is opened in, is determined by the following:
+- **No existing window open**: A new Scriptable Sheets window opens. Existing window sessions are left untouched.
+- **A docked window is open**: The most recently focused docked window is used.
+- **Only floating windows are open**: The most recently focused floating window is used.
+
+Docked windows take priority over floating ones. This is because invoking the context menu happens from the Project window, which returns focus to the main editor window and its docked windows. See [Limitations](#limitations) if you'd prefer the asset to open in a specific window.
+
+Once the target window is chosen, Scriptable Sheets automatically selects the correct Sheet Asset type and Object type, clears any search filter that would hide the asset, pages to the asset's row, and focuses its Name cell. If the Name column is hidden, the first visible cell in that row is focused instead.
+
+**Sub Assets**: If Sub Asset Filters are enabled, the Main Asset dropdown is set to the sub-asset's parent automatically.
+
+**Assets outside the scan path**: If the asset cannot be found after scanning, a warning is shown pointing to `Object Management -> Scanning` where you can widen the scan path. See [Object Management Settings](#object-management-settings).
+
+**Unsupported asset types**: The menu item is greyed out for asset types that have no Scriptable Sheets mapping, such as folders. Unity does not support hiding context menu items per selection, so it remains visible but disabled for unsupported types.
 
 ## Column Context Menu
 - **Dock Column**: Docks the column so it remains visible while horizontally scrolling. Only the Actions and Name columns can be docked.
@@ -167,6 +187,7 @@ Settings for handling data import and export.
 
 - **Smart Paste**: Enhance pasting by distributing flat file data across table cells using the specified delimiters.
 - **Headers**: Include header names when transferring flat file data. When enabled, the first row is discarded on import if it matches the header names (ignoring whitespace and letter casing).
+  - **Always Strip**: Always discard the first row on import, regardless of whether it matches the header names. Enable when the incoming column names differ from the table's, or when changing the "Header Format" option frequently. Disable to only strip the first row when it matches the header names, which provides stricter data validation.
 - **Page Rows Only**: Restrict data transfer to the rows on the current page only.
 - **Visible Columns Only**: Restrict data transfer to visible columns only.
 - **Remove Empty Rows**: Remove empty rows when parsing flat file data.
@@ -249,7 +270,7 @@ Settings for the user interface, table layout, and table navigation.
 - **Show Asset Path**: Display the asset path for each Object.
 - **Show GUID**: Display each Objects GUID.
 - **Show Read-only**: Display read-only fields for each Object.
-- **Collection Tables**: Enable a toolbar dropdown that expands a single array or list field into a table of rows, grouped by their owning Object, instead of displaying its elements as columns. Each element becomes a row and the element's fields become the columns. Top-level collections plus collections one level deep inside a serializable class are selectable. Selecting "None" from the dropdown keeps the default column behavior with no effect on the default view. "Show Children" and "Show Arrays" control whether nested fields and arrays appear within the table.
+- **Collection Tables**: Enable a toolbar dropdown that expands a single array or list field into a table of rows, grouped by their owning Object, instead of displaying its elements as columns. Each element becomes a row and the element's fields become the columns. Top-level collections plus collections nested within serializable class fields are selectable, up to the "Collection Table Depth" under [Workload](#workload-settings). Selecting "None" from the dropdown keeps the default column behavior with no effect on the default view. "Show Children" and "Show Arrays" control whether nested fields and arrays appear within the table.
 - **Managed References**: Display columns for the fields of every concrete subtype assigned to a serialize reference field, along with a per-row dropdown to view or change each Object's concrete type. Changing the type requires Unity 2021.2 or newer.
 - **Sub Asset Filters**: Display a Sub Asset filter dropdown with all the Main Assets that contain the selected ScriptableObject type.
 - **Table Navigation**: Settings for navigating the table view.
@@ -268,6 +289,7 @@ Settings that affect computational performance. Modify with caution to optimize 
 - **Debug**: Display debug log messages in the console.
 - **Virtualization**: Improves performance by rendering only the cells within the visible scroll area.
 - **Asset Preview Depth**: How many levels of child ScriptableObject references the column header's "Map Asset Preview" menu explores when listing object reference properties whose preview can be shown. Higher values build larger menus.
+- **Collection Table Depth**: How many levels deep the Collection Table dropdown explores when discovering array or list fields. A value of 1 offers only top-level collections, while higher values descend through serializable class fields. Raising this too high can cause hangs on deeply nested Objects.
 - **Max Iterations**: Max number of properties to iterate over when generating the column layout. Raising this too high can cause hangs on large arrays or deeply nested Objects. This is in increments of 1000.
 - **Max Visible Cells**: Total number of cells that can be visible at a time. Capped for performance.
 - **Rows Per Page**: Max rows to display per page. Capped for performance.
@@ -324,7 +346,9 @@ Google Sheets Importers allow you to import data with a single click from any Go
 
 4. Click the `Import CSV from Google Sheets` button on the toolbar.
    - CSV import settings will be used with double quotes as the wrap option.
-   
+   - When more than one importer targets the selected type the button becomes a dropdown. Pick the importer you want and it imports using that importer. Folder bound importers list their folder next to the name.
+   - If an importer has a **Folder** set, only the assets within that folder are imported into, regardless of the current scan path. This lets you keep many importers (for example one per folder) for the same type and import each into its own folder without changing the scan path.
+
 ### Importer Properties
 
 Each Google Sheets Importer must define how it maps Google Sheet data to Unity objects. The following fields are available when configuring an importer:
@@ -334,6 +358,7 @@ Each Google Sheets Importer must define how it maps Google Sheet data to Unity o
 - **Main Asset**: Optional main asset to group this importer under. Useful for organizing Sub Assets when importing multiple types into one parent asset.
 - **Collection Table Path**: Optional full property path of the collection field this importer targets, such as `m_Items` or `m_Items.m_Weapons`. When set, the importer is only used while that array or list field is expanded as a Collection Table under [User Interface](#user-interface-settings). Leave empty for importers that target the default whole-Object table.
 - **Window Name**: Optional Scriptable Sheets window name that this importer targets. If set, this importer is only used when the window name matches the open Scriptable Sheets window name. If multiple importers target the same type, the importer without a window name will be used by default unless an importer with a matching window name is set.
+- **Folder**: Optional folder that scopes which assets this importer imports into. Use the **Select Folder** button to pick it. When set, only assets within the folder are imported into, leaving the rest of the table untouched. Append `/*` to also include assets in subfolders. Without a wildcard only assets directly inside the folder match. Leave empty to import into every asset of the type currently shown. When "Auto Generate" is enabled under [Object Management](#object-management-settings), any assets created to match extra rows are placed in this folder so they are included in the import.
 - **Sheet ID**: The Sheet ID from the Google Sheets URL. The Google Sheets URL must be accessible via a shared link.
 - **Sheet Name**: The name of the sheet tab inside the Google Sheet. This is case-sensitive and must match the tab name exactly.
 
@@ -398,6 +423,7 @@ The settings page also includes the following actions:
 - **Editing Text**: Press 'ENTER' when editing an input field to get full control over the text position within the input field. Press 'ENTER' again to apply your changes. Press 'ESC' to cancel.
 - **Multiline Text**: To add newlines in text fieds press 'ENTER' to select the text field then hold 'CTRL' or 'CMD' and press 'ENTER' again to add a newline.
 - **Navigating Cells**: When a cell is focused you can navigate to the next cell with arrow keys, tab, or pressing enter twice (if you're in an input field). Hold shift to go in the opposite direction. The scroll view should automatically update as you scroll, but occassionally it can get stuck, especially in cases where the next cell is a null array element.
+- **Open Object References**: Double-click an assigned Object reference or Addressable Asset Reference cell to open that Object in the same window. Scriptable Sheets switches to the referenced Object's Sheet Asset and type, then selects its row, the same as the [Open in Scriptable Sheets](#project-window-context-menu) context menu. For example, double-clicking a projectile Prefab referenced by a Weapon switches to the Prefab sheet with that projectile selected. Empty references are left untouched.
 - **Play AudioClips**: AudioClip references and the AudioClip Sheet Asset Type display an inline play button to preview the clip. The button stays highlighted while playing; click it again to stop. Only one clip plays at a time, so playing another clip or letting the clip finish unhighlights the button.
 
 ## Advanced Search Filtering
@@ -503,6 +529,7 @@ This section covers what Scriptable Sheets cannot do at this time, whether due t
 - **Mixed Value Fields**: Certain mixed value fields on default UnityEngine Components will not render as a flagged enum within Scriptable Sheets. Due to the underlying backing field being inaccessible.
 - **No Formulas**: There are no formulas for filling cells.
 - **Numeric Fields**: `uint` and `ulong` numeric fields are only supported on Unity versions 2022.1 and later.
+- **Open in Scriptable Sheets Window**: When mixing docked and floating windows, the "Open in Scriptable Sheets" context menu always targets a docked window over a floating one. Invoking the menu from the Project window returns focus to the main editor and its docked windows, so Unity reports a docked window as the most recently focused regardless of which floating window you were working in. To open an asset in a specific floating window, close or dock the other windows first, or use that window's type and search controls to find the asset manually.
 - **Session Persistence**: The state of each Scriptable Sheets window has several values that are preserved, including selectable asset types, selected asset type, selected Object type, pinned Object types, and other fields. If you exit Unity or close a window, it will attempt to preserve the states of each window. The saved session will try to persist when the assembly recompiles, but cannot handle every possible change given the reflective nature of the tool. Especially if you added/removed a type, it might reset the window or swap an index within the UI.
 - **Settings Persistence**: Settings between sessions are not persisted in Unity versions prior to 2020.1. For this reason, we recommend Unity 2020.3 and up.
 - **Use String Enums**: Use String Enums does not apply to flagged enums unless it's a single value and you prefix the name with 'Enum:'. They also do not apply to various default UnityEngine Components.
@@ -517,10 +544,14 @@ This section covers what Scriptable Sheets cannot do at this time, whether due t
 Quick answers and pointers to the relevant setting, section, or [sample](#samples) for common questions, ordered roughly from getting started to more advanced.
 
 - **How do I open Scriptable Sheets?** Navigate to `Window -> Scriptable Sheets` for your first window. Right-click any window title to open a recent sheet, start a new one, or clone the current one. See [Setup](#setup).
+- **How do I jump directly to an asset in Scriptable Sheets?** Right-click the asset in the Project window and choose **Open in Scriptable Sheets**. It picks or opens the right window, selects the correct Sheet Asset type and Object type, pages to the asset's row, and focuses its Name cell. See [Project Window Context Menu](#project-window-context-menu).
+- **How do I follow an Object reference to its own sheet?** Double-click an assigned Object reference or Addressable Asset Reference cell and the same window switches to that Object's Sheet Asset and type and selects its row. See [Additional Controls](#additional-controls).
 - **What kinds of assets can I view?** Pick a Unity asset type from the top-left dropdown, including ScriptableObjects (the default), Prefabs, Components, and Object references such as AudioClips, Materials, and Textures. Then choose a specific type from the next dropdown. The Sampler sample shows nearly every supported property type, and the Component Explorer sample covers Unity Components.
 - **I don't see my ScriptableObject type. How do I find it?** By default only types that already have an instance are listed. Switch "Scan Option" to "Assembly" under [Object Management](#object-management-settings) to find types that have not been created yet, and adjust the "Scan Path" to widen or narrow the search.
+- **Can I view assets in the Packages folder?** Yes. Set "Scan Path Option" to "Packages" or "All" under [Object Management](#object-management-settings) to include the Packages folder in the scan. Keep in mind that read-only packages cannot be modified.
 - **How do I create new Objects?** Use the create button on the toolbar to make one or many instances at once, and control their names and folders with the "New Object Name", prefix, suffix, and "Use Expansion" settings under [Object Management](#object-management-settings).
 - **Where do I change settings?** Open `Edit -> Project Settings -> Preferences -> Scriptable Sheets`, or right-click a window title and choose "Open Settings Window".
+- **Can I save and restore window layouts?** Yes. Window configurations are saved automatically. Right-click any Scriptable Sheets window title to access Rename Sheet, Open Sheet, and Delete Sheet from the [Context Menu](#context-menu) to manage your saved layouts.
 - **Does Scriptable Sheets affect my game build?** No. It is Editor only and completely stripped from builds, except for any samples you import.
 - **How do I display more rows and columns?** Hide any columns you don't need (right-click a header or use the Hide Columns button), then raise "Visible Column Limit", "Rows Per Page", and "Max Visible Cells" under [Workload](#workload-settings). Pagination, a smaller window, and the "Virtualization" setting all help render large tables. See [Performance](#performance) for the full list, or watch the [video walkthrough](https://www.youtube.com/watch?v=q6il9WTZ5ZQ).
 - **How do I hide, resize, or sort columns?** Right-click any header to hide or show it, or use the Show/Hide Columns and Stretch/Compact/Expand toolbar buttons. Click a header to sort by that column, including colors, gradients, and read-only fields. The Actions and Name columns can be docked so they stay visible while scrolling.
@@ -531,9 +562,13 @@ Quick answers and pointers to the relevant setting, section, or [sample](#sample
 - **How do I show deeply nested or inherited fields?** Enable "Show Children" under [User Interface](#user-interface-settings) to flatten nested classes and inherited fields into columns. The Deep Inheritance sample demonstrates this.
 - **How do I view and edit Sub Assets?** Enable "Sub Asset Filters" under [User Interface](#user-interface-settings) to filter by the Main Asset that contains a type. The Sub Assets sample shows how Sub Assets behave.
 - **How do I view and edit Prefab components?** Select the Component or Prefab asset type from the top-left dropdown to filter, view, and edit Components like Transforms, Colliders, and Rigidbodies. See the Component Explorer and Component Presets samples.
+- **How do I show child GameObjects and their Components?** Disable "Root Prefabs Only" under [Object Management](#object-management-settings). When enabled, only Components directly on root Prefab assets are shown and nested child Objects are ignored. With it disabled, enable "Show Asset Path" to identify which root Prefab each child Component belongs to.
 - **How do I edit SerializeReference or polymorphic fields?** Enable "Managed References" under [User Interface](#user-interface-settings) for a per-row type dropdown and a column for every concrete subtype's fields. Changing the type requires Unity 2021.2 or newer. See the Serialize Reference sample.
-- **What are Collection Tables and how do I use one?** Enable "Collection Tables" under [User Interface](#user-interface-settings), then pick a field from the toolbar dropdown to expand one array or list into a table of rows grouped by their owning Object, with each element's fields as columns. Top-level collections and collections one level deep inside a serializable class are offered, and you can select "None" to return to the default view. Property filters match each element, while name, GUID, and asset path filters match the owning Object. The Collections sample includes a CollectionTableSample to try, and [Limitations](#limitations) covers what Collection Tables can't do.
+- **What are Collection Tables and how do I use one?** Enable "Collection Tables" under [User Interface](#user-interface-settings), then pick a field from the toolbar dropdown to expand one array or list into a table of rows grouped by their owning Object, with each element's fields as columns. Use "Collection Table Depth" under [Workload](#workload-settings) to reach fields nested within serializable classes, and select "None" to return to the default view. Property filters match each element, while name, GUID, and asset path filters match the owning Object. The Collections sample includes a CollectionTableSample to try, and [Limitations](#limitations) covers what Collection Tables can't do.
 - **How do I export or copy every row and column?** Disable "Page Rows Only" and "Visible Columns Only" under [Data Transfer](#data-transfer-settings) so copy, paste, import, and save span every page and every hidden column.
+- **How do I export as JSON?** Click the Save button and use a `.json` file extension, or right-click the window title and choose "Copy Json" to copy to the clipboard. See [Data Serialization and Transfer](#data-serialization-and-transfer).
+- **How do I include headers in exported data?** Enable "Headers" under [Data Transfer](#data-transfer-settings). When enabled, column names are written as the first row of every export. On import, the first row is stripped according to the "Always Strip" sub-setting.
+- **Why is (or isn't) the first row being stripped on import?** With "Headers" enabled, the nested "Always Strip" toggle under [Data Transfer](#data-transfer-settings) controls this. When "Always Strip" is on (the default) the first row is always discarded on import, regardless of column matching, which is best when the incoming column names differ from the table's or when changing the "Header Format" option frequently. When it's off, the first row is only stripped if it matches the column names (ignoring whitespace and letter casing), which provides stricter data validation.
 - **How do I copy data to and from spreadsheets like Excel or Google Sheets?** Use copy/paste or import/save with a flat file format and matching delimiters (Google Sheets uses a tab delimiter by default). For Google Sheets set "Escape Option" to "Repeat" so double quotes are handled correctly. See [Data Serialization and Transfer](#data-serialization-and-transfer) and [External Tools](#external-tools). The Localization sample shows using a spreadsheet workflow for localized text.
 - **Why isn't my CSV or wrapped data parsing correctly?** Check the "Wrap Option", "Escape Option", and delimiters under [Data Transfer](#data-transfer-settings), and make sure your newlines match your row delimiter. Animation curves and gradients are serialized as base64 strings when using wrap options unsupported by Json, such as double quotes.
 - **How do I import from Google Sheets?** Set up a Google Sheets Importer and import with a single click. See [Google Sheets Importers](#google-sheets-importers).
